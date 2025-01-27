@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿//==================================================
+// Copyright (c) Coalition of Good-Hearted Engineers
+// Free To Use Comfort and Pease
+//==================================================
+
+using System.Collections.Generic;
 using ADotNet.Clients;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks.SetupDotNetTaskV1s;
 using ADotNet.Models.Pipelines.GithubPipelines.DotNets.Tasks;
