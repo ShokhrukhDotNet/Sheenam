@@ -1,0 +1,25 @@
+name: Sheenam Build Pipeline
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checking Out Code
+      uses: actions/checkout@v2
+    - name: Setting Up .Net
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 9.0.102
+        include-prerelease: false
+    - name: Restoring NuGet Packages
+      run: dotnet restore
+    - name: Building Project
+      run: dotnet build --no-restore
+    - name: Running Tests
+      run: dotnet test --no-build --verbosity normal
