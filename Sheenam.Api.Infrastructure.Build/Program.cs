@@ -35,7 +35,7 @@ public class Program
                     "build",
                     new Job
                     {
-                        RunsOn = "windows-latest",
+                        RunsOn = "BuildMachines.Windows2022",
 
                         Steps = new List<GithubTask>
                         {
@@ -63,9 +63,9 @@ public class Program
                                 Name = "Building Project"
                             },
 
-                            new DotNetTestTask
+                            new TestTask
                             {
-                                Name = "Running Tests"
+                                Name = "Test"
                             }
 
                         }
