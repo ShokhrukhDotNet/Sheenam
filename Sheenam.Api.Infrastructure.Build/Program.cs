@@ -35,7 +35,7 @@ public class Program
                     "build",
                     new Job
                     {
-                        RunsOn = "BuildMachines.Windows2022",
+                        RunsOn = "windows-latest",
 
                         Steps = new List<GithubTask>
                         {
