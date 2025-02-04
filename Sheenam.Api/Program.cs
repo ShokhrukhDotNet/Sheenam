@@ -6,6 +6,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sheenam.Api.Brokers.Loggings;
 using Sheenam.Api.Brokers.Storages;
 
 namespace Sheenam.Api
@@ -17,11 +18,11 @@ namespace Sheenam.Api
             var builder = WebApplication.CreateBuilder(args);
 
 
-            builder.Services.AddControllers();
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+            builder.Services.AddControllers();
+            builder.Services.AddDbContext<StorageBroker>();
+            AddBrokers(builder);
 
             var app = builder.Build();
 
@@ -38,6 +39,12 @@ namespace Sheenam.Api
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void AddBrokers(WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+            builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         }
     }
 }
