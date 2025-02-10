@@ -49,7 +49,7 @@ public class Program
                                 Name = "Setting Up .Net",
                                 TargetDotNetVersion = new TargetDotNetVersion
                                 {
-                                    DotNetVersion = "9.0.102"
+                                    DotNetVersion = "9.0"
                                 }
                             },
 
