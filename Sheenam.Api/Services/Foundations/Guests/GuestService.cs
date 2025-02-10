@@ -22,7 +22,7 @@ namespace Sheenam.Api.Services.Foundations.Guests
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-        
+
         public ValueTask<Guest> AddGuestAsync(Guest guest) =>
         TryCatch(async () =>
         {
