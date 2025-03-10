@@ -12,7 +12,7 @@ using Sheenam.Api.Brokers.Storages;
 namespace Sheenam.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20250130082042_InitialCreateAllTables")]
+    [Migration("20250310180326_InitialCreateAllTables")]
     partial class InitialCreateAllTables
     {
         /// <inheritdoc />
@@ -60,6 +60,39 @@ namespace Sheenam.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Hosts.Host", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateOfBirth")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hosts");
                 });
 #pragma warning restore 612, 618
         }
