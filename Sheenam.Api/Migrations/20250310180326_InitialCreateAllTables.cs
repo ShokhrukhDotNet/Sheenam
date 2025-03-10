@@ -33,6 +33,23 @@ namespace Sheenam.Api.Migrations
                 {
                     table.PrimaryKey("PK_Guests", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Hosts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hosts", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -40,6 +57,9 @@ namespace Sheenam.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Guests");
+
+            migrationBuilder.DropTable(
+                name: "Hosts");
         }
     }
 }
