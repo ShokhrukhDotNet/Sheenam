@@ -19,12 +19,12 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
             // given
             Host randomHost = CreateRandomHost();
             Host inputHost = randomHost;
-            Host returningHost = inputHost;
-            Host expectedHost = returningHost.DeepClone();
+            Host storageHost = inputHost;
+            Host expectedHost = storageHost.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertHostAsync(inputHost))
-                    .ReturnsAsync(returningHost);
+                    .ReturnsAsync(storageHost);
 
             // when
             Host actualHost =
