@@ -9,20 +9,24 @@ using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Services.Foundations.Hosts;
 using Sheenam.Api.Models.Foundations.Hosts;
 using Tynamix.ObjectFiller;
+using Sheenam.Api.Brokers.Loggings;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 {
     public partial class HostServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IHostService hostService;
 
         public HostServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-            this.hostService =
-                new HostService(storageBroker: this.storageBrokerMock.Object);
+            this.hostService = new HostService(
+                storageBroker: this.storageBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object);
         }
 
         private static Host CreateRandomHost() =>
