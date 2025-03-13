@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using Sheenam.Api.Brokers.Loggings;
 using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Models.Foundations.Hosts;
+using Sheenam.Api.Models.Foundations.Hosts.Exceptions;
 
 namespace Sheenam.Api.Services.Foundations.Hosts
 {
-    public class HostService : IHostService
+    public partial class HostService : IHostService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -24,7 +25,12 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<Host> AddHostAsync(Host host) =>
-            await this.storageBroker.InsertHostAsync(host);
+        public ValueTask<Host> AddHostAsync(Host host) =>
+        TryCatch(async () =>
+        {
+            ValidateHostNotNull(host);
+
+            return await this.storageBroker.InsertHostAsync(host);
+        });
     }
 }
