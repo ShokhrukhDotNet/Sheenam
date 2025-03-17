@@ -4,6 +4,8 @@
 //==================================================
 
 using System;
+using System.Data;
+using System.Reflection.Metadata;
 using Sheenam.Api.Models.Foundations.Hosts;
 using Sheenam.Api.Models.Foundations.Hosts.Exceptions;
 
@@ -21,7 +23,8 @@ namespace Sheenam.Api.Services.Foundations.Hosts
                 (Rule: IsInvalid(host.LastName), Parameter: nameof(Host.LastName)),
                 (Rule: IsInvalid(host.DateOfBirth), Parameter: nameof(Host.DateOfBirth)),
                 (Rule: IsInvalid(host.Email), Parameter: nameof(Host.Email)),
-                (Rule: IsInvalid(host.Address), Parameter: nameof(Host.Address)));
+                (Rule: IsInvalid(host.Address), Parameter: nameof(Host.Address)),
+                (Rule: IsInvalid(host.Gender), Parameter: nameof(Host.Gender)));
         }
 
         private void ValidateHostNotNull(Host host)
@@ -48,6 +51,12 @@ namespace Sheenam.Api.Services.Foundations.Hosts
         {
             Condition = date == default,
             Message = "Date is required"
+        };
+
+        private static dynamic IsInvalid(GenderType gender) => new
+        {
+            Condition = Enum.IsDefined(gender) is false,
+            Message = "Value is invalid"
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
