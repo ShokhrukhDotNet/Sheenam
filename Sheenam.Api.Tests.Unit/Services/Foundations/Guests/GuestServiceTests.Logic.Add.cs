@@ -17,17 +17,17 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldAddGuestAsync()
         {
             // given
-            Guest randomGuest = CreateRandomGuest();
-            Guest inputGuest = randomGuest;
-            Guest storageGuest = inputGuest;
-            Guest expectedGuest = storageGuest.DeepClone();
+            Host randomGuest = CreateRandomGuest();
+            Host inputGuest = randomGuest;
+            Host storageGuest = inputGuest;
+            Host expectedGuest = storageGuest.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertGuestAsync(inputGuest))
                     .ReturnsAsync(storageGuest);
 
             // when
-            Guest actualGuest =
+            Host actualGuest =
                 await this.guestService.AddGuestAsync(inputGuest);
 
             // then

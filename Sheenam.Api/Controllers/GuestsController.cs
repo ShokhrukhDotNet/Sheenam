@@ -24,11 +24,11 @@ namespace Sheenam.Api.Controllers
         }
 
         [HttpPost]
-        public async ValueTask<ActionResult<Guest>> PostGuestAsync(Guest guest)
+        public async ValueTask<ActionResult<Host>> PostGuestAsync(Host guest)
         {
             try
             {
-                Guest postedGuest = await this.guestService.AddGuestAsync(guest);
+                Host postedGuest = await this.guestService.AddGuestAsync(guest);
 
                 return Created(postedGuest);
             }

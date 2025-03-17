@@ -15,9 +15,9 @@ namespace Sheenam.Api.Services.Foundations.Guests
 {
     public partial class GuestService
     {
-        private delegate ValueTask<Guest> ReturningGuestFunction();
+        private delegate ValueTask<Host> ReturningGuestFunction();
 
-        private async ValueTask<Guest> TryCatch(ReturningGuestFunction returningGuestFunction)
+        private async ValueTask<Host> TryCatch(ReturningGuestFunction returningGuestFunction)
         {
             try
             {

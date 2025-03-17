@@ -71,7 +71,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 
             invalidHostException.AddData(
                 key: nameof(Host.DateOfBirth),
-                values: "Data is required");
+                values: "Date is required");
 
             invalidHostException.AddData(
                 key: nameof(Host.Email),
