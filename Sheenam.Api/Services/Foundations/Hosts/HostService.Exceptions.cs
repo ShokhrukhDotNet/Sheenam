@@ -3,6 +3,7 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -43,6 +44,13 @@ namespace Sheenam.Api.Services.Foundations.Hosts
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHostException);
             }
+            catch (Exception exception)
+            {
+                var failedHostServiceException =
+                    new FailedHostServiceException(exception);
+
+                throw CreateAndLogServiceException(failedHostServiceException);
+            }
         }
 
         private HostValidationException CreateAndLogValidationException(Xeption exception)
@@ -72,6 +80,14 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             this.loggingBroker.LogError(hostDependencyValidationException);
 
             return hostDependencyValidationException;
+        }
+
+        private HostServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var hostServiceException = new HostServiceException(exception);
+            this.loggingBroker.LogError(hostServiceException);
+
+            return hostServiceException;
         }
     }
 }
