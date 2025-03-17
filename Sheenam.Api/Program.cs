@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Sheenam.Api.Brokers.Loggings;
 using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Services.Foundations.Guests;
+using Sheenam.Api.Services.Foundations.Hosts;
 
 namespace Sheenam.Api
 {
@@ -52,6 +53,7 @@ namespace Sheenam.Api
         private static void AddFoundationServices(WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IGuestService, GuestService>();
+            builder.Services.AddTransient<IHostService, HostService>();
         }
     }
 }

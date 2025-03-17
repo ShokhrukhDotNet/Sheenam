@@ -11,7 +11,7 @@ namespace Sheenam.Api.Models.Foundations.Hosts.Exceptions
     public class AlreadyExistHostException : Xeption
     {
         public AlreadyExistHostException(Exception innerException)
-            :  base(message: "Host already exists", innerException)
+            : base(message: "Host already exists", innerException)
         { }
     }
 }
