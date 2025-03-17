@@ -3,9 +3,9 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-namespace Sheenam.Api.Models.Foundations.Hosts
+namespace Sheenam.Api.Models.Foundations.Guests
 {
-    public enum GenderType
+    public enum GuestGenderType
     {
         Male,
         Female,

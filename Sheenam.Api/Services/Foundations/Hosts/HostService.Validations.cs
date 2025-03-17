@@ -51,7 +51,7 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             Message = "Date is required"
         };
 
-        private static dynamic IsInvalid(GenderType gender) => new
+        private static dynamic IsInvalid(HostGenderType gender) => new
         {
             Condition = Enum.IsDefined(gender) is false,
             Message = "Value is invalid"

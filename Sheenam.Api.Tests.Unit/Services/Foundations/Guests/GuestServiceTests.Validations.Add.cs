@@ -111,7 +111,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
             // given
             Guest randomGuest = CreateRandomGuest();
             Guest invalidGuest = randomGuest;
-            invalidGuest.Gender = GetInvalidEnum<GenderType>();
+            invalidGuest.Gender = GetInvalidEnum<GuestGenderType>();
             var invalidGuestException = new InvalidGuestException();
 
             invalidGuestException.AddData(
