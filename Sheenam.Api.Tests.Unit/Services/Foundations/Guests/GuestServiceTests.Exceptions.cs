@@ -19,7 +19,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            Host someGuest = CreateRandomGuest();
+            Guest someGuest = CreateRandomGuest();
             SqlException sqlException = GetSqlError();
             var failedGuestStorageException = new FailedGuestStorageException(sqlException);
 
@@ -31,7 +31,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Host> addGuestTask =
+            ValueTask<Guest> addGuestTask =
                 this.guestService.AddGuestAsync(someGuest);
 
             // then
@@ -54,7 +54,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldThrowDependencyValidationOnAddIfDuplicateKeyErrorOccursAndLogItAsync()
         {
             // given
-            Host someGuest = CreateRandomGuest();
+            Guest someGuest = CreateRandomGuest();
             string someMessage = GetRandomString();
 
             var duplicateKeyException =
@@ -71,7 +71,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
                     .ThrowsAsync(duplicateKeyException);
 
             // when
-            ValueTask<Host> addGuestTask =
+            ValueTask<Guest> addGuestTask =
                 this.guestService.AddGuestAsync(someGuest);
 
             // then
@@ -95,7 +95,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            Host someGuest = CreateRandomGuest();
+            Guest someGuest = CreateRandomGuest();
             var serviceException = new Exception();
 
             var failedGuestServiceException =
@@ -109,7 +109,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
                     .ThrowsAsync(serviceException);
 
             // when
-            ValueTask<Host> addGuestTask =
+            ValueTask<Guest> addGuestTask =
                 this.guestService.AddGuestAsync(someGuest);
 
             // then

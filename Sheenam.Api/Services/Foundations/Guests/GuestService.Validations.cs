@@ -11,21 +11,21 @@ namespace Sheenam.Api.Services.Foundations.Guests
 {
     public partial class GuestService
     {
-        private void ValidateGuestOnAdd(Host guest)
+        private void ValidateGuestOnAdd(Guest guest)
         {
             ValidateGuestNotNull(guest);
 
             Validate(
-                (Rule: IsInvalid(guest.Id), Parameter: nameof(Host.Id)),
-                (Rule: IsInvalid(guest.FirstName), Parameter: nameof(Host.FirstName)),
-                (Rule: IsInvalid(guest.LastName), Parameter: nameof(Host.LastName)),
-                (Rule: IsInvalid(guest.DateOfBirth), Parameter: nameof(Host.DateOfBirth)),
-                (Rule: IsInvalid(guest.Email), Parameter: nameof(Host.Email)),
-                (Rule: IsInvalid(guest.Address), Parameter: nameof(Host.Address)),
-                (Rule: IsInvalid(guest.Gender), Parameter: nameof(Host.Gender)));
+                (Rule: IsInvalid(guest.Id), Parameter: nameof(Guest.Id)),
+                (Rule: IsInvalid(guest.FirstName), Parameter: nameof(Guest.FirstName)),
+                (Rule: IsInvalid(guest.LastName), Parameter: nameof(Guest.LastName)),
+                (Rule: IsInvalid(guest.DateOfBirth), Parameter: nameof(Guest.DateOfBirth)),
+                (Rule: IsInvalid(guest.Email), Parameter: nameof(Guest.Email)),
+                (Rule: IsInvalid(guest.Address), Parameter: nameof(Guest.Address)),
+                (Rule: IsInvalid(guest.Gender), Parameter: nameof(Guest.Gender)));
         }
 
-        private void ValidateGuestNotNull(Host guest)
+        private void ValidateGuestNotNull(Guest guest)
         {
             if (guest is null)
             {
