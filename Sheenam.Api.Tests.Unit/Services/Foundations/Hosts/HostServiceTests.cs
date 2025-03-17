@@ -12,6 +12,8 @@ using Tynamix.ObjectFiller;
 using Sheenam.Api.Brokers.Loggings;
 using System.Linq.Expressions;
 using Xeptions;
+using Microsoft.Data.SqlClient;
+using System.Runtime.CompilerServices;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 {
@@ -39,6 +41,9 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 9).GetValue();
+
+        private static SqlException GetSqlError() =>
+            (SqlException)RuntimeHelpers.GetUninitializedObject(typeof(SqlException));
 
         private static T GetInvalidEnum<T>()
         {
