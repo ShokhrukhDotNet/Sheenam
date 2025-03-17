@@ -4,8 +4,6 @@
 //==================================================
 
 using System;
-using System.Data;
-using System.Reflection.Metadata;
 using Sheenam.Api.Models.Foundations.Hosts;
 using Sheenam.Api.Models.Foundations.Hosts.Exceptions;
 
