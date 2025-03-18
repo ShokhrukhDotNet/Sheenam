@@ -3,6 +3,9 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -14,16 +17,12 @@ namespace Sheenam.Api.Brokers.Storages
     {
         public DbSet<Guest> Guests { get; set; }
 
-        public async ValueTask<Guest> InsertGuestAsync(Guest guest)
-        {
-            using var broker = new StorageBroker(this.configuration);
+        public async ValueTask<Guest> InsertGuestAsync(Guest guest) =>
+            await InsertAsync(guest);
 
-            EntityEntry<Guest> guestEntityEntry =
-                await broker.Guests.AddAsync(guest);
+        public IQueryable<Guest> SelectAllGuests() => SelectAll<Guest>();
 
-            await broker.SaveChangesAsync();
-
-            return guestEntityEntry.Entity;
-        }
+        public async ValueTask<Guest> SelectGuestByIdAsync(Guid guestId) =>
+            await SelectAsync<Guest>(guestId);
     }
 }
