@@ -1,4 +1,9 @@
-﻿using System;
+﻿//==================================================
+// Copyright (c) Coalition of Good-Hearted Engineers
+// Free To Use To Find Comfort and Pease
+//==================================================
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
