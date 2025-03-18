@@ -4,6 +4,7 @@
 //==================================================
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.Data.SqlClient;
@@ -35,6 +36,9 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
 
         private static Guest CreateRandomGuest() =>
             CreateGuestFiller(date: GetRandomDateTimeOffset()).Create();
+
+        private static IQueryable<Guest> CreateRandomGuest(DateTimeOffset date) =>
+            CreateGuestFiller(date).Create(GetRandomNumber()).AsQueryable();
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
