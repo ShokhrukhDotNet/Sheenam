@@ -19,7 +19,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
             DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
             IQueryable<Guest> randomGuest = CreateRandomGuest(randomDateTime);
             IQueryable<Guest> storageGuest = randomGuest;
-            IQueryable<Guest> expectedGuest = storageGuest;
+            IQueryable<Guest> expectedGuest = storageGuest.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectAllGuests())
