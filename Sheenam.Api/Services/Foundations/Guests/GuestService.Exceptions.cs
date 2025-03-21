@@ -39,6 +39,10 @@ namespace Sheenam.Api.Services.Foundations.Guests
 
                 throw CreateAndLogCriticalDependencyException(failedGuestStorageException);
             }
+            catch (NotFoundGuestException notFoundGuestException)
+            {
+                throw CreateAndLogValidationException(notFoundGuestException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistGuestException =
