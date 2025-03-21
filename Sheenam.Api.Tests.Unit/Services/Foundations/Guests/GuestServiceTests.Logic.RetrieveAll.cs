@@ -18,7 +18,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
     public partial class GuestServiceTests
     {
         [Fact]
-        public async Task ShouldRetrieveAllGuestAsync()
+        public async Task ShouldRetrieveAllGuests()
         {
             // given
             IQueryable<Guest> randomGuest = CreateRandomGuests();
@@ -42,6 +42,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }
