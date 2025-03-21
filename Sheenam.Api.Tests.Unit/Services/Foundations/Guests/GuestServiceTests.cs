@@ -37,11 +37,14 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         private static Guest CreateRandomGuest() =>
             CreateGuestFiller(date: GetRandomDateTimeOffset()).Create();
 
-        private static IQueryable<Guest> CreateRandomGuest(DateTimeOffset date) =>
-            CreateGuestFiller(date).Create(GetRandomNumber()).AsQueryable();
-
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private IQueryable<Guest> CreateRandomGuests()
+        {
+            return CreateGuestFiller(GetRandomDateTimeOffset())
+                .Create(count: GetRandomNumber()).AsQueryable();
+        }
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 9).GetValue();

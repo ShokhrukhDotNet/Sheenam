@@ -21,8 +21,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldRetrieveAllGuestAsync()
         {
             // given
-            DateTimeOffset randomDateTime = GetRandomDateTimeOffset();
-            IQueryable<Guest> randomGuest = CreateRandomGuest(randomDateTime);
+            IQueryable<Guest> randomGuest = CreateRandomGuests();
             IQueryable<Guest> storageGuest = randomGuest;
             IQueryable<Guest> expectedGuest = storageGuest.DeepClone();
 
