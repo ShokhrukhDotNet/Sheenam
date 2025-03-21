@@ -68,13 +68,13 @@ namespace Sheenam.Api.Services.Foundations.Guests
 
                 throw CreateAndLogCriticalDependencyException(failedGuestStorageException);
             }
-            //catch (Exception exception)
-            //{
-            //    var failedGuestServiceException =
-            //        new FailedGuestServiceException(exception);
+            catch (Exception exception)
+            {
+                var failedGuestServiceException =
+                    new FailedGuestServiceException(exception);
 
-            //    throw CreateAndLogServiceException(failedGuestServiceException);
-            //}
+                throw CreateAndLogServiceException(failedGuestServiceException);
+            }
         }
 
         private GuestValidationException CreateAndLogValidationException(Xeption exception)
