@@ -38,7 +38,16 @@ namespace Sheenam.Api.Services.Foundations.Guests
         });
 
         public ValueTask<Guest> RetrieveGuestByIdAsync(Guid guestId) =>
-            this.storageBroker.SelectGuestByIdAsync(guestId);
+        TryCatch(async () =>
+        {
+            ValidateGuestId(guestId);
+
+            Guest maybeGuest = await this.storageBroker.SelectGuestByIdAsync(guestId);
+
+            ValidateStorageGuest(maybeGuest, guestId);
+
+            return maybeGuest;
+        });
 
         public IQueryable<Guest> RetrieveAllGuests() =>
             TryCatch(() => this.storageBroker.SelectAllGuests());
