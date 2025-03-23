@@ -52,10 +52,11 @@ namespace Sheenam.Api.Services.Foundations.Guests
             }
             catch (Exception exception)
             {
-                var failedGuestServiceException =
-                    new FailedGuestServiceException(exception);
+                //var failedGuestServiceException =
+                //    new FailedGuestServiceException(exception);
 
-                throw CreateAndLogServiceException(failedGuestServiceException);
+                //throw CreateAndLogServiceException(failedGuestServiceException);
+                throw exception;
             }
         }
 
