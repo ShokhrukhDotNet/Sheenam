@@ -51,5 +51,10 @@ namespace Sheenam.Api.Services.Foundations.Guests
 
         public IQueryable<Guest> RetrieveAllGuests() =>
             TryCatch(() => this.storageBroker.SelectAllGuests());
+
+        public ValueTask<Guest> ModifyGuestAsync(Guest guest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
