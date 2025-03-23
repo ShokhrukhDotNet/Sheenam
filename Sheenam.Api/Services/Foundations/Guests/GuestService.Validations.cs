@@ -4,6 +4,7 @@
 //==================================================
 
 using System;
+using System.Data;
 using Sheenam.Api.Models.Foundations.Guests;
 using Sheenam.Api.Models.Foundations.Guests.Exceptions;
 
@@ -56,6 +57,17 @@ namespace Sheenam.Api.Services.Foundations.Guests
             Condition = Enum.IsDefined(gender) is false,
             Message = "Value is invalid"
         };
+
+        private static void ValidateGuestId(Guid guestId) =>
+            Validate((Rule: IsInvalid(guestId), Parameter: nameof(Guest.Id)));
+
+        private static void ValidateStorageGuest(Guest maybeGuest, Guid guestId)
+        {
+            if (maybeGuest is null)
+            {
+                throw new NotFoundGuestException(guestId);
+            }
+        }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {

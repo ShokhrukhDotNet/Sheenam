@@ -6,6 +6,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
 using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Services.Foundations.Guests;
@@ -47,6 +48,7 @@ namespace Sheenam.Api
         private static void AddBrokers(WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+            builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
             builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         }
 

@@ -21,18 +21,28 @@ namespace Sheenam.Api.Brokers.Storages
             this.Database.Migrate();
         }
 
-        private async ValueTask<T> InsertAsync<T>(T @object)
+        public async ValueTask<T> InsertAsync<T>(T @object)
         {
-            this.Entry(@object).State = EntityState.Added;
-            await this.SaveChangesAsync();
+            var broker = new StorageBroker(this.configuration);
+            broker.Entry(@object).State = EntityState.Added;
+            await broker.SaveChangesAsync();
 
             return @object;
         }
 
-        private IQueryable<T> SelectAll<T>() where T : class => this.Set<T>();
+        public IQueryable<T> SelectAll<T>() where T : class
+        {
+            var broker = new StorageBroker(configuration);
 
-        private async ValueTask<T> SelectAsync<T>(params object[] @objectIds) where T : class =>
-            await this.FindAsync<T>(objectIds);
+            return broker.Set<T>();
+        }
+
+        public async ValueTask<T> SelectAsync<T>(params object[] objectsId) where T : class
+        {
+            var broker = new StorageBroker(configuration);
+
+            return await broker.FindAsync<T>(objectsId);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

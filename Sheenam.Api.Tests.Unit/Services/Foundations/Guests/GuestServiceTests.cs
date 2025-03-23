@@ -4,10 +4,12 @@
 //==================================================
 
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Microsoft.Data.SqlClient;
 using Moq;
+using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
 using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Models.Foundations.Guests;
@@ -20,16 +22,19 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
     public partial class GuestServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IGuestService guestService;
 
         public GuestServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.guestService = new GuestService(
                 storageBroker: this.storageBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object,
                 loggingBroker: this.loggingBrokerMock.Object);
         }
 
@@ -38,6 +43,12 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private IQueryable<Guest> CreateRandomGuests()
+        {
+            return CreateGuestFiller(GetRandomDateTimeOffset())
+                .Create(count: GetRandomNumber()).AsQueryable();
+        }
 
         private static int GetRandomNumber() =>
             new IntRange(min: 2, max: 9).GetValue();
