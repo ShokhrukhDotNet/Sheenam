@@ -3,6 +3,8 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -44,6 +46,52 @@ namespace Sheenam.Api.Controllers
             catch (GuestDependencyValidationException guestDependencyValidationException)
             {
                 return BadRequest(guestDependencyValidationException.InnerException);
+            }
+            catch (GuestDependencyException guestDependencyException)
+            {
+                return InternalServerError(guestDependencyException.InnerException);
+            }
+            catch (GuestServiceException guestServiceException)
+            {
+                return InternalServerError(guestServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("ById")]
+        public async ValueTask<ActionResult<Guest>> GetGuestByIdAsync(Guid guestId)
+        {
+            try
+            {
+                return await this.guestService.RetrieveGuestByIdAsync(guestId);
+            }
+            catch (GuestDependencyException guestDependencyException)
+            {
+                return InternalServerError(guestDependencyException.InnerException);
+            }
+            catch (GuestValidationException guestValidationException)
+                when (guestValidationException.InnerException is InvalidGuestException)
+            {
+                return BadRequest(guestValidationException.InnerException);
+            }
+            catch (GuestValidationException guestValidationException)
+                when (guestValidationException.InnerException is NotFoundGuestException)
+            {
+                return NotFound(guestValidationException.InnerException);
+            }
+            catch (GuestServiceException guestServiceException)
+            {
+                return InternalServerError(guestServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("All")]
+        public ActionResult<IQueryable<Guest>> GetAllGuests()
+        {
+            try
+            {
+                IQueryable<Guest> allGuests = this.guestService.RetrieveAllGuests();
+
+                return Ok(allGuests);
             }
             catch (GuestDependencyException guestDependencyException)
             {
