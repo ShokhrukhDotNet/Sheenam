@@ -52,12 +52,12 @@ namespace Sheenam.Api.Services.Foundations.Guests
         public IQueryable<Guest> RetrieveAllGuests() =>
             TryCatch(() => this.storageBroker.SelectAllGuests());
 
-        public async ValueTask<Guest> ModifyGuestAsync(Guest guest)
+        public ValueTask<Guest> ModifyGuestAsync(Guest guest) =>
+        TryCatch(async () =>
         {
-            Guest maybeGuest =
-                await this.storageBroker.SelectGuestByIdAsync(guest.Id);
+            ValidateGuestOnAdd(guest);
 
             return await this.storageBroker.UpdateGuestAsync(guest);
-        }
+        });
     }
 }
