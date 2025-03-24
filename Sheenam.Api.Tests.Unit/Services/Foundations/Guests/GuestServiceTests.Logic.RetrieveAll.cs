@@ -3,11 +3,7 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
