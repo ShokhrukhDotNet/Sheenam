@@ -78,6 +78,10 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
                 values: "Text is required");
 
             invalidGuestException.AddData(
+                key: nameof(Guest.PhoneNumber),
+                values: "Text is required");
+
+            invalidGuestException.AddData(
                 key: nameof(Guest.Address),
                 values: "Text is required");
 
