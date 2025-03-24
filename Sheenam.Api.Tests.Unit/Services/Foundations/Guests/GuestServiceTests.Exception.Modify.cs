@@ -53,7 +53,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
                 broker.SelectGuestByIdAsync(guestId), Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.UpdateGuestAsync(someGuest), Times.Once);
+                broker.UpdateGuestAsync(someGuest), Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
