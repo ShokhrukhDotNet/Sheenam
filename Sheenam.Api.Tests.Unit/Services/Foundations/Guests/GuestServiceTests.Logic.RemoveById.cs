@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using Sheenam.Api.Models.Foundations.Guests;
 
@@ -23,7 +24,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
             Guest storageGuest = randomGuest;
             Guest expectedInputGuest = storageGuest;
             Guest deletedGuest = expectedInputGuest;
-            Guest expectedGuest = deletedGuest;
+            Guest expectedGuest = deletedGuest.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectGuestByIdAsync(inputGuestId))
