@@ -44,12 +44,12 @@ namespace Sheenam.Api.Services.Foundations.Guests
             {
                 throw CreateAndLogValidationException(notFoundGuestException);
             }
-            //catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            //{
-            //    var lockedGuestException = new LockedGuestException(dbUpdateConcurrencyException);
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedGuestException = new LockedGuestException(dbUpdateConcurrencyException);
 
-            //    throw CreateAndLogDependencyValidationException(lockedGuestException);
-            //}
+                throw CreateAndLogDependencyValidationException(lockedGuestException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 var failedGuestStorageException = new FailedGuestStorageException(dbUpdateException);
