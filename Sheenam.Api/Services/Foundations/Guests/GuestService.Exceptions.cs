@@ -34,12 +34,12 @@ namespace Sheenam.Api.Services.Foundations.Guests
             {
                 throw CreateAndLogValidationException(invalidGuestException);
             }
-            //catch (SqlException sqlException)
-            //{
-            //    var failedGuestStorageException = new FailedGuestStorageException(sqlException);
+            catch (SqlException sqlException)
+            {
+                var failedGuestStorageException = new FailedGuestStorageException(sqlException);
 
-            //    throw CreateAndLogCriticalDependencyException(failedGuestStorageException);
-            //}
+                throw CreateAndLogCriticalDependencyException(failedGuestStorageException);
+            }
             catch (NotFoundGuestException notFoundGuestException)
             {
                 throw CreateAndLogValidationException(notFoundGuestException);
