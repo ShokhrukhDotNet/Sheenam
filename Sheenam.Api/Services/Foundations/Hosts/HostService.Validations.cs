@@ -57,6 +57,9 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             Message = "Value is invalid"
         };
 
+        private static void ValidateHostId(Guid hostId) =>
+            Validate((Rule: IsInvalid(hostId), Parameter: nameof(Host.Id)));
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidHostException = new InvalidHostException();
