@@ -44,8 +44,9 @@ namespace Sheenam.Api.Services.Foundations.Hosts
 
             Host maybeHost = await this.storageBroker.SelectHostByIdAsync(hostId);
 
-            return maybeHost;
+            ValidateStorageHost(maybeHost, hostId);
 
+            return maybeHost;
         });
 
         public IQueryable<Host> RetrieveAllHosts() =>
