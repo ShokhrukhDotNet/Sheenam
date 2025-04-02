@@ -38,7 +38,7 @@ namespace Sheenam.Api.Services.Foundations.Hosts
         });
 
         public ValueTask<Host> RetrieveHostByIdAsync(Guid hostId) =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectHostByIdAsync(hostId);
 
         public IQueryable<Host> RetrieveAllHosts() =>
             TryCatch(() => this.storageBroker.SelectAllHosts());
