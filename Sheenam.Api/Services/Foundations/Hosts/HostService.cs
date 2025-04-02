@@ -38,6 +38,6 @@ namespace Sheenam.Api.Services.Foundations.Hosts
         });
 
         public IQueryable<Host> RetrieveAllHosts() =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectAllHosts();
     }
 }
