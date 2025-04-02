@@ -3,6 +3,8 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -44,6 +46,52 @@ namespace Sheenam.Api.Controllers
             catch (HostDependencyValidationException hostDependencyValidationException)
             {
                 return BadRequest(hostDependencyValidationException.InnerException);
+            }
+            catch (HostDependencyException hostDependencyException)
+            {
+                return InternalServerError(hostDependencyException.InnerException);
+            }
+            catch (HostServiceException hostServiceException)
+            {
+                return InternalServerError(hostServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("ById")]
+        public async ValueTask<ActionResult<Host>> GetHostByIdAsync(Guid hostId)
+        {
+            try
+            {
+                return await this.hostService.RetrieveHostByIdAsync(hostId);
+            }
+            catch (HostDependencyException hostDependencyException)
+            {
+                return InternalServerError(hostDependencyException.InnerException);
+            }
+            catch (HostValidationException hostValidationException)
+                when (hostValidationException.InnerException is InvalidHostException)
+            {
+                return BadRequest(hostValidationException.InnerException);
+            }
+            catch (HostValidationException hostValidationException)
+                when (hostValidationException.InnerException is NotFoundHostException)
+            {
+                return NotFound(hostValidationException.InnerException);
+            }
+            catch (HostServiceException hostServiceException)
+            {
+                return InternalServerError(hostServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("All")]
+        public ActionResult<IQueryable<Host>> GetAllHosts()
+        {
+            try
+            {
+                IQueryable<Host> allHosts = this.hostService.RetrieveAllHosts();
+
+                return Ok(allHosts);
             }
             catch (HostDependencyException hostDependencyException)
             {
