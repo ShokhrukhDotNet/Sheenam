@@ -37,6 +37,9 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             return await this.storageBroker.InsertHostAsync(host);
         });
 
+        public ValueTask<Host> RetrieveHostByIdAsync(Guid hostId) =>
+            throw new NotImplementedException();
+
         public IQueryable<Host> RetrieveAllHosts() =>
             TryCatch(() => this.storageBroker.SelectAllHosts());
     }
