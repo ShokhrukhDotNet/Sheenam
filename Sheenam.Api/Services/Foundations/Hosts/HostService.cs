@@ -51,5 +51,8 @@ namespace Sheenam.Api.Services.Foundations.Hosts
 
         public IQueryable<Host> RetrieveAllHosts() =>
             TryCatch(() => this.storageBroker.SelectAllHosts());
+
+        public ValueTask<Host> ModifyHostAsync(Host host) =>
+            throw new NotImplementedException();
     }
 }
