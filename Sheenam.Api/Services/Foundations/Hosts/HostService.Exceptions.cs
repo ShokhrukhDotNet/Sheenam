@@ -63,13 +63,13 @@ namespace Sheenam.Api.Services.Foundations.Hosts
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHostException);
             }
-            catch (Exception exception)
-            {
-                var failedHostServiceException =
-                    new FailedHostServiceException(exception);
+            //catch (Exception exception)
+            //{
+            //    var failedHostServiceException =
+            //        new FailedHostServiceException(exception);
 
-                throw CreateAndLogServiceException(failedHostServiceException);
-            }
+            //    throw CreateAndLogServiceException(failedHostServiceException);
+            //}
         }
 
         private IQueryable<Host> TryCatch(ReturningHostsFunction returningHostsFunction)
