@@ -67,7 +67,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
             var notFoundGuestException =
                 new NotFoundGuestException(inputGuestId);
 
-            var expectedguestValidationException =
+            var expectedGuestValidationException =
                 new GuestValidationException(notFoundGuestException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -78,20 +78,20 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
             ValueTask<Guest> removeGuestById =
                 this.guestService.RemoveGuestByIdAsync(inputGuestId);
 
-            var actualguestValidationException =
+            var actualGuestValidationException =
                 await Assert.ThrowsAsync<GuestValidationException>(
                     removeGuestById.AsTask);
 
             // then
-            actualguestValidationException.Should()
-                .BeEquivalentTo(expectedguestValidationException);
+            actualGuestValidationException.Should()
+                .BeEquivalentTo(expectedGuestValidationException);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectGuestByIdAsync(It.IsAny<Guid>()), Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedguestValidationException))), Times.Once);
+                    expectedGuestValidationException))), Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.DeleteGuestAsync(It.IsAny<Guest>()), Times.Never);
