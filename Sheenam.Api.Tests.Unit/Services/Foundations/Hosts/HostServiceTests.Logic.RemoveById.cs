@@ -8,6 +8,7 @@ using Sheenam.Api.Models.Foundations.Hosts;
 using System.Threading.Tasks;
 using System;
 using FluentAssertions;
+using Force.DeepCloner;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 {
@@ -23,7 +24,7 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
             Host storageHost = randomHost;
             Host expectedInputHost = storageHost;
             Host deletedHost = expectedInputHost;
-            Host expectedHost = deletedHost;
+            Host expectedHost = deletedHost.DeepClone();
 
             this.storageBrokerMock.Setup(broker =>
                 broker.SelectHostByIdAsync(inputHostId))
