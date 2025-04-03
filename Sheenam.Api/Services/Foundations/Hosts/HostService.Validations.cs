@@ -26,7 +26,7 @@ namespace Sheenam.Api.Services.Foundations.Hosts
                 (Rule: IsInvalid(host.Gender), Parameter: nameof(Host.Gender)));
         }
 
-        private void ValidateHostNotNull(Host host)
+        private static void ValidateHostNotNull(Host host)
         {
             if (host is null)
             {
@@ -67,6 +67,21 @@ namespace Sheenam.Api.Services.Foundations.Hosts
             {
                 throw new NotFoundHostException(hostId);
             }
+        }
+
+        private static void ValidateHostOnModify(Host host)
+        {
+            ValidateHostNotNull(host);
+
+            Validate(
+                (Rule: IsInvalid(host.Id), Parameter: nameof(Host.Id)),
+                (Rule: IsInvalid(host.FirstName), Parameter: nameof(Host.FirstName)),
+                (Rule: IsInvalid(host.LastName), Parameter: nameof(Host.LastName)),
+                (Rule: IsInvalid(host.DateOfBirth), Parameter: nameof(Host.DateOfBirth)),
+                (Rule: IsInvalid(host.Email), Parameter: nameof(Host.Email)),
+                (Rule: IsInvalid(host.PhoneNumber), Parameter: nameof(Host.PhoneNumber)),
+                (Rule: IsInvalid(host.Address), Parameter: nameof(Host.Address)),
+                (Rule: IsInvalid(host.Gender), Parameter: nameof(Host.Gender)));
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)

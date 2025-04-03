@@ -52,12 +52,15 @@ namespace Sheenam.Api.Services.Foundations.Hosts
         public IQueryable<Host> RetrieveAllHosts() =>
             TryCatch(() => this.storageBroker.SelectAllHosts());
 
-        public async ValueTask<Host> ModifyHostAsync(Host host)
+        public ValueTask<Host> ModifyHostAsync(Host host) =>
+        TryCatch(async () =>
         {
+            ValidateHostOnModify(host);
+
             Host maybeHost =
                 await this.storageBroker.SelectHostByIdAsync(host.Id);
 
             return await this.storageBroker.UpdateHostAsync(host);
-        }
+        });
     }
 }
