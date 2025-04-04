@@ -12,7 +12,7 @@ using Sheenam.Api.Brokers.Storages;
 namespace Sheenam.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20250317163519_InitialCreateAllTables")]
+    [Migration("20250404115231_InitialCreateAllTables")]
     partial class InitialCreateAllTables
     {
         /// <inheritdoc />
@@ -60,6 +60,52 @@ namespace Sheenam.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("HostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsPetAllowed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsShared")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVacant")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NumberOfBathrooms")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfBedrooms")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Homes");
                 });
 
             modelBuilder.Entity("Sheenam.Api.Models.Foundations.Hosts.Host", b =>

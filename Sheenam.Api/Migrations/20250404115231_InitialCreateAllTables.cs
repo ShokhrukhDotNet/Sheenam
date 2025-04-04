@@ -1,9 +1,4 @@
-﻿//==================================================
-// Copyright (c) Coalition of Good-Hearted Engineers
-// Free To Use To Find Comfort and Pease
-//==================================================
-
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -35,6 +30,28 @@ namespace Sheenam.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Homes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdditionalInfo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsVacant = table.Column<bool>(type: "bit", nullable: false),
+                    IsPetAllowed = table.Column<bool>(type: "bit", nullable: false),
+                    IsShared = table.Column<bool>(type: "bit", nullable: false),
+                    NumberOfBedrooms = table.Column<int>(type: "int", nullable: false),
+                    NumberOfBathrooms = table.Column<int>(type: "int", nullable: false),
+                    Area = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Homes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Hosts",
                 columns: table => new
                 {
@@ -58,6 +75,9 @@ namespace Sheenam.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Guests");
+
+            migrationBuilder.DropTable(
+                name: "Homes");
 
             migrationBuilder.DropTable(
                 name: "Hosts");
