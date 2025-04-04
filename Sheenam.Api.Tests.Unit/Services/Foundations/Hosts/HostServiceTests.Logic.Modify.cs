@@ -3,12 +3,12 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using Moq;
-using Sheenam.Api.Models.Foundations.Hosts;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
+using Moq;
+using Sheenam.Api.Models.Foundations.Hosts;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Hosts
 {
