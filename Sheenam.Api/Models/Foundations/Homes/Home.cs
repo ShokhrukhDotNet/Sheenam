@@ -4,13 +4,13 @@
 //==================================================
 
 using System;
+using Sheenam.Api.Models.Foundations.Hosts;
 
 namespace Sheenam.Api.Models.Foundations.Homes
 {
     public class Home
     {
-        public Guid Id { get; set; }
-        public Guid HostId { get; set; }
+        public Guid HomeId { get; set; }
         public string Address { get; set; }
         public string AdditionalInfo { get; set; }
         public bool IsVacant { get; set; }
@@ -21,5 +21,7 @@ namespace Sheenam.Api.Models.Foundations.Homes
         public double Area { get; set; }
         public decimal Price { get; set; }
         public HouseType Type { get; set; }
+        public Guid HostId { get; set; }
+        public Host Host { get; set; }
     }
 }

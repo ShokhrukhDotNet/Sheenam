@@ -61,7 +61,7 @@ namespace Sheenam.Api.Migrations
 
             modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("HomeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -100,7 +100,9 @@ namespace Sheenam.Api.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("HomeId");
+
+                    b.HasIndex("HostId");
 
                     b.ToTable("Homes");
                 });
@@ -140,6 +142,22 @@ namespace Sheenam.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hosts");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
+                {
+                    b.HasOne("Sheenam.Api.Models.Foundations.Hosts.Host", "Host")
+                        .WithMany("Homes")
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Hosts.Host", b =>
+                {
+                    b.Navigation("Homes");
                 });
 #pragma warning restore 612, 618
         }
