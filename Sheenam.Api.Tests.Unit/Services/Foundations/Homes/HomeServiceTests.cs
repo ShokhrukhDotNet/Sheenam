@@ -4,6 +4,7 @@
 //==================================================
 
 using System;
+using System.Linq.Expressions;
 using Moq;
 using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
@@ -11,6 +12,7 @@ using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Models.Foundations.Homes;
 using Sheenam.Api.Services.Foundations.Homes;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
 {
@@ -38,6 +40,9 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+            actualException => actualException.SameExceptionAs(expectedException);
 
         private static Filler<Home> CreateHomeFiller(DateTimeOffset date)
         {

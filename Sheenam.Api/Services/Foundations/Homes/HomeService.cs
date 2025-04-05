@@ -12,7 +12,7 @@ using Sheenam.Api.Models.Foundations.Homes;
 
 namespace Sheenam.Api.Services.Foundations.Homes
 {
-    public class HomeService : IHomeService
+    public partial class HomeService : IHomeService
     {
         private readonly IStorageBroker storageBroker;
         private readonly IDateTimeBroker dateTimeBroker;
