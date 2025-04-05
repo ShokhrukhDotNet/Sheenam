@@ -22,7 +22,8 @@ namespace Sheenam.Api.Services.Foundations.Homes
                 (Rule: IsInvalid(home.NumberOfBedrooms), Parameter: nameof(Home.NumberOfBedrooms)),
                 (Rule: IsInvalid(home.NumberOfBathrooms), Parameter: nameof(Home.NumberOfBathrooms)),
                 (Rule: IsInvalid(home.Area), Parameter: nameof(Home.Area)),
-                (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)));
+                (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)),
+                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)));
         }
 
         private static void ValidateHomeNotNull(Home home)
@@ -61,6 +62,12 @@ namespace Sheenam.Api.Services.Foundations.Homes
         {
             Condition = number <= 0,
             Message = "Value must be greater than 0"
+        };
+
+        private static dynamic IsInvalid(HouseType type) => new
+        {
+            Condition = Enum.IsDefined(type) is false,
+            Message = "Value is invalid"
         };
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
