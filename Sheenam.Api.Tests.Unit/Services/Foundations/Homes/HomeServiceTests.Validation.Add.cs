@@ -108,5 +108,42 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnAddIfTypeIsInvalidAndLogItAsync()
+        {
+            // given
+            Home randomHome = CreateRandomHome();
+            Home invalidHome = randomHome;
+            invalidHome.Type = GetInvalidEnum<HouseType>();
+            var invalidHomeException = new InvalidHomeException();
+
+            invalidHomeException.AddData(
+                key: nameof(Home.Type),
+                values: "Value is invalid");
+
+            var expectedHomeValidationException =
+                new HomeValidationException(invalidHomeException);
+
+            // when
+            ValueTask<Home> addHomeTask =
+                this.homeService.AddHomeAsync(invalidHome);
+
+            // then
+            await Assert.ThrowsAsync<HomeValidationException>(() =>
+                addHomeTask.AsTask());
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertHomeAsync(It.IsAny<Home>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
