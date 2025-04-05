@@ -70,18 +70,6 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
                 values: "Text is required");
 
             invalidHomeException.AddData(
-                key: nameof(Home.IsVacant),
-                values: "Value is required");
-
-            invalidHomeException.AddData(
-                key: nameof(Home.IsPetAllowed),
-                values: "Value is required");
-
-            invalidHomeException.AddData(
-                key: nameof(Home.IsShared),
-                values: "Value is required");
-
-            invalidHomeException.AddData(
                 key: nameof(Home.NumberOfBedrooms),
                 values: "Value must be greater than 0");
 
