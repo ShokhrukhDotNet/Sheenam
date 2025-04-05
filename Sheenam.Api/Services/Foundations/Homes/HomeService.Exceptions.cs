@@ -4,6 +4,7 @@
 //==================================================
 
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Sheenam.Api.Models.Foundations.Homes;
 using Sheenam.Api.Models.Foundations.Homes.Exceptions;
 using Xeptions;
@@ -28,6 +29,12 @@ namespace Sheenam.Api.Services.Foundations.Homes
             {
                 throw CreateAndLogValidationException(invalidHomeException);
             }
+            catch (SqlException sqlException)
+            {
+                var failedHomeStorageException = new FailedHomeStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedHomeStorageException);
+            }
         }
 
         private HomeValidationException CreateAndLogValidationException(Xeption exception)
@@ -38,6 +45,14 @@ namespace Sheenam.Api.Services.Foundations.Homes
             this.loggingBroker.LogError(homeValidationException);
 
             return homeValidationException;
+        }
+
+        private HomeDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            var homeDependencyException = new HomeDependencyException(exception);
+            this.loggingBroker.LogCritical(homeDependencyException);
+
+            return homeDependencyException;
         }
     }
 }
