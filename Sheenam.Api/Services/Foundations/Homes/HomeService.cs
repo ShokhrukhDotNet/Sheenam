@@ -29,6 +29,6 @@ namespace Sheenam.Api.Services.Foundations.Homes
         }
 
         public ValueTask<Home> AddHomeAsync(Home home) =>
-            throw new NotImplementedException();
+            this.storageBroker.InsertHomeAsync(home);
     }
 }
