@@ -5,8 +5,8 @@
 
 using System.Threading.Tasks;
 using Moq;
-using Sheenam.Api.Models.Foundations.Homes.Exceptions;
 using Sheenam.Api.Models.Foundations.Homes;
+using Sheenam.Api.Models.Foundations.Homes.Exceptions;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
 {

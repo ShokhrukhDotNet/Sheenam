@@ -4,8 +4,8 @@
 //==================================================
 
 using System;
-using Sheenam.Api.Models.Foundations.Homes;
 using System.Collections.Generic;
+using Sheenam.Api.Models.Foundations.Homes;
 
 namespace Sheenam.Api.Models.Foundations.Hosts
 {
