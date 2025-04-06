@@ -3,48 +3,48 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using System;
-using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using Moq;
-using Sheenam.Api.Models.Foundations.Guests;
-using Sheenam.Api.Models.Foundations.Guests.Exceptions;
+using Sheenam.Api.Models.Foundations.Homes.Exceptions;
+using Sheenam.Api.Models.Foundations.Homes;
+using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
+using System;
 
-namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
+namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
 {
-    public partial class GuestServiceTests
+    public partial class HomeServiceTests
     {
         [Fact]
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
             // given
-            Guest someGuest = CreateRandomGuest();
+            Home someHome = CreateRandomHome();
             SqlException sqlException = GetSqlError();
-            var failedGuestStorageException = new FailedGuestStorageException(sqlException);
+            var failedHomeStorageException = new FailedHomeStorageException(sqlException);
 
-            var expectedGuestDependencyException =
-                new GuestDependencyException(failedGuestStorageException);
+            var expectedHomeDependencyException =
+                new HomeDependencyException(failedHomeStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuestAsync(someGuest))
+                broker.InsertHomeAsync(someHome))
                     .ThrowsAsync(sqlException);
 
             // when
-            ValueTask<Guest> addGuestTask =
-                this.guestService.AddGuestAsync(someGuest);
+            ValueTask<Home> addHomeTask =
+                this.homeService.AddHomeAsync(someHome);
 
             // then
-            await Assert.ThrowsAsync<GuestDependencyException>(() =>
-                addGuestTask.AsTask());
+            await Assert.ThrowsAsync<HomeDependencyException>(() =>
+                addHomeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuestAsync(someGuest),
+                broker.InsertHomeAsync(someHome),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCritical(It.Is(SameExceptionAs(
-                    expectedGuestDependencyException))),
+                    expectedHomeDependencyException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -56,37 +56,37 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldThrowDependencyValidationOnAddIfDuplicateKeyErrorOccursAndLogItAsync()
         {
             // given
-            Guest someGuest = CreateRandomGuest();
+            Home someHome = CreateRandomHome();
             string someMessage = GetRandomString();
 
             var duplicateKeyException =
                 new DuplicateKeyException(someMessage);
 
-            var alreadyExistGuestException =
-                new AlreadyExistGuestException(duplicateKeyException);
+            var alreadyExistHomeException =
+                new AlreadyExistHomeException(duplicateKeyException);
 
-            var expectedGuestDependencyValidationException =
-                new GuestDependencyValidationException(alreadyExistGuestException);
+            var expectedHomeDependencyValidationException =
+                new HomeDependencyValidationException(alreadyExistHomeException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuestAsync(someGuest))
+                broker.InsertHomeAsync(someHome))
                     .ThrowsAsync(duplicateKeyException);
 
             // when
-            ValueTask<Guest> addGuestTask =
-                this.guestService.AddGuestAsync(someGuest);
+            ValueTask<Home> addHomeTask =
+                this.homeService.AddHomeAsync(someHome);
 
             // then
-            await Assert.ThrowsAsync<GuestDependencyValidationException>(() =>
-                addGuestTask.AsTask());
+            await Assert.ThrowsAsync<HomeDependencyValidationException>(() =>
+                addHomeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuestAsync(someGuest),
+                broker.InsertHomeAsync(someHome),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedGuestDependencyValidationException))),
+                    expectedHomeDependencyValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
@@ -98,34 +98,34 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
         public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
         {
             // given
-            Guest someGuest = CreateRandomGuest();
+            Home someHome = CreateRandomHome();
             var serviceException = new Exception();
 
-            var failedGuestServiceException =
-                new FailedGuestServiceException(serviceException);
+            var failedHomeServiceException =
+                new FailedHomeServiceException(serviceException);
 
-            var expectedGuestServiceException =
-                new GuestServiceException(failedGuestServiceException);
+            var expectedHomeServiceException =
+                new HomeServiceException(failedHomeServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.InsertGuestAsync(someGuest))
+                broker.InsertHomeAsync(someHome))
                     .ThrowsAsync(serviceException);
 
             // when
-            ValueTask<Guest> addGuestTask =
-                this.guestService.AddGuestAsync(someGuest);
+            ValueTask<Home> addHomeTask =
+                this.homeService.AddHomeAsync(someHome);
 
             // then
-            await Assert.ThrowsAsync<GuestServiceException>(() =>
-                addGuestTask.AsTask());
+            await Assert.ThrowsAsync<HomeServiceException>(() =>
+                addHomeTask.AsTask());
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertGuestAsync(someGuest),
+                broker.InsertHomeAsync(someHome),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                    expectedGuestServiceException))),
+                    expectedHomeServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();

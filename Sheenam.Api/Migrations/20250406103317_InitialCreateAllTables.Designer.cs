@@ -12,7 +12,7 @@ using Sheenam.Api.Brokers.Storages;
 namespace Sheenam.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20250404162020_InitialCreateAllTables")]
+    [Migration("20250406103317_InitialCreateAllTables")]
     partial class InitialCreateAllTables
     {
         /// <inheritdoc />
