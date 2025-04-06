@@ -70,8 +70,12 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
         private static Filler<Home> CreateHomeFiller(DateTimeOffset date)
         {
             var filler = new Filler<Home>();
+            int positiveNumber = GetRandomNumber();
 
             filler.Setup()
+                .OnType<int>().Use(positiveNumber)
+                .OnType<double>().Use(positiveNumber)
+                .OnType<decimal>().Use(positiveNumber)
                 .OnType<DateTimeOffset>().Use(date);
 
             return filler;
