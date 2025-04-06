@@ -3,6 +3,7 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -43,6 +44,13 @@ namespace Sheenam.Api.Services.Foundations.Homes
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHomeException);
             }
+            catch (Exception exception)
+            {
+                var failedHomeServiceException =
+                    new FailedHomeServiceException(exception);
+
+                throw CreateAndLogServiceException(failedHomeServiceException);
+            }
         }
 
         private HomeValidationException CreateAndLogValidationException(Xeption exception)
@@ -72,6 +80,14 @@ namespace Sheenam.Api.Services.Foundations.Homes
             this.loggingBroker.LogError(homeDependencyValidationException);
 
             return homeDependencyValidationException;
+        }
+
+        private HomeServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var homeServiceException = new HomeServiceException(exception);
+            this.loggingBroker.LogError(homeServiceException);
+
+            return homeServiceException;
         }
     }
 }
