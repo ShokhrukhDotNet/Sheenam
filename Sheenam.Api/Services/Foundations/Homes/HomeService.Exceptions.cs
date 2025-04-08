@@ -68,6 +68,13 @@ namespace Sheenam.Api.Services.Foundations.Homes
 
                 throw CreateAndLogCriticalDependencyException(failedHomeStorageException);
             }
+            catch (Exception exception)
+            {
+                var failedHomeServiceException =
+                    new FailedHomeServiceException(exception);
+
+                throw CreateAndLogServiceException(failedHomeServiceException);
+            }
         }
 
         private HomeValidationException CreateAndLogValidationException(Xeption exception)
