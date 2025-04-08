@@ -3,6 +3,8 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
@@ -34,5 +36,8 @@ namespace Sheenam.Api.Services.Foundations.Homes
 
             return await this.storageBroker.InsertHomeAsync(home);
         });
+
+        public IQueryable<Home> RetrieveAllHomes() =>
+            throw new NotImplementedException();
     }
 }
