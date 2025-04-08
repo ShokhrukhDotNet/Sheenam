@@ -38,6 +38,6 @@ namespace Sheenam.Api.Services.Foundations.Homes
         });
 
         public IQueryable<Home> RetrieveAllHomes() =>
-            throw new NotImplementedException();
+            this.storageBroker.SelectAllHomes();
     }
 }
