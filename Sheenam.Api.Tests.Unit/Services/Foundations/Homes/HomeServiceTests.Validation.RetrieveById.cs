@@ -50,5 +50,45 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRetrieveByIdIfHomeNotFoundAndLogItAsync()
+        {
+            // given
+            Guid someHomeId = Guid.NewGuid();
+            Home noHome = null;
+
+            var notFoundHomeException =
+                new NotFoundHomeException(someHomeId);
+
+            var expectedHomeValidationException =
+                new HomeValidationException(notFoundHomeException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectHomeByIdAsync(
+                    It.IsAny<Guid>())).ReturnsAsync(noHome);
+
+            // when
+            ValueTask<Home> retriveByIdHomeTask =
+                this.homeService.RetrieveHomeByIdAsync(someHomeId);
+
+            var actualHomeValidationException =
+                await Assert.ThrowsAsync<HomeValidationException>(
+                    retriveByIdHomeTask.AsTask);
+
+            // then
+            actualHomeValidationException.Should().BeEquivalentTo(expectedHomeValidationException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectHomeByIdAsync(someHomeId), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeValidationException))), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
