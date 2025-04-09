@@ -50,13 +50,13 @@ namespace Sheenam.Api.Services.Foundations.Homes
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHomeException);
             }
-            //catch (Exception exception)
-            //{
-            //    var failedHomeServiceException =
-            //        new FailedHomeServiceException(exception);
+            catch (Exception exception)
+            {
+                var failedHomeServiceException =
+                    new FailedHomeServiceException(exception);
 
-            //    throw CreateAndLogServiceException(failedHomeServiceException);
-            //}
+                throw CreateAndLogServiceException(failedHomeServiceException);
+            }
         }
 
         private IQueryable<Home> TryCatch(ReturningHomesFunction returningHomesFunction)
