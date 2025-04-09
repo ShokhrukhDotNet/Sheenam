@@ -3,6 +3,8 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -44,6 +46,52 @@ namespace Sheenam.Api.Controllers
             catch (HomeDependencyValidationException homeDependencyValidationException)
             {
                 return BadRequest(homeDependencyValidationException.InnerException);
+            }
+            catch (HomeDependencyException homeDependencyException)
+            {
+                return InternalServerError(homeDependencyException.InnerException);
+            }
+            catch (HomeServiceException homeServiceException)
+            {
+                return InternalServerError(homeServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("ById")]
+        public async ValueTask<ActionResult<Home>> GetHomeByIdAsync(Guid homeId)
+        {
+            try
+            {
+                return await this.homeService.RetrieveHomeByIdAsync(homeId);
+            }
+            catch (HomeDependencyException homeDependencyException)
+            {
+                return InternalServerError(homeDependencyException.InnerException);
+            }
+            catch (HomeValidationException homeValidationException)
+                when (homeValidationException.InnerException is InvalidHomeException)
+            {
+                return BadRequest(homeValidationException.InnerException);
+            }
+            catch (HomeValidationException homeValidationException)
+                when (homeValidationException.InnerException is NotFoundHomeException)
+            {
+                return NotFound(homeValidationException.InnerException);
+            }
+            catch (HomeServiceException homeServiceException)
+            {
+                return InternalServerError(homeServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("All")]
+        public ActionResult<IQueryable<Home>> GetAllHomes()
+        {
+            try
+            {
+                IQueryable<Home> allHomes = this.homeService.RetrieveAllHomes();
+
+                return Ok(allHomes);
             }
             catch (HomeDependencyException homeDependencyException)
             {
