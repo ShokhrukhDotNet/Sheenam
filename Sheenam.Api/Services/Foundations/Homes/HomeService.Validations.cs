@@ -74,6 +74,14 @@ namespace Sheenam.Api.Services.Foundations.Homes
         private static void ValidateHomeId(Guid homeId) =>
             Validate((Rule: IsInvalid(homeId), Parameter: nameof(Home.HomeId)));
 
+        private static void ValidateStorageHome(Home maybeHome, Guid homeId)
+        {
+            if (maybeHome is null)
+            {
+                throw new NotFoundHomeException(homeId);
+            }
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidHomeException = new InvalidHomeException();
