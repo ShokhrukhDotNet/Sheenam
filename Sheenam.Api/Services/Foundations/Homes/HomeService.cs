@@ -52,7 +52,12 @@ namespace Sheenam.Api.Services.Foundations.Homes
         public IQueryable<Home> RetrieveAllHomes() =>
             TryCatch(() => this.storageBroker.SelectAllHomes());
 
-        public ValueTask<Home> ModifyHomeAsync(Home home) =>
-            throw new NotImplementedException();
+        public async ValueTask<Home> ModifyHomeAsync(Home home)
+        {
+            Home maybeHome =
+                await this.storageBroker.SelectHomeByIdAsync(home.HomeId);
+
+            return await this.storageBroker.UpdateHomeAsync(home);
+        }
     }
 }
