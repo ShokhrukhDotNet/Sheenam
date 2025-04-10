@@ -55,8 +55,6 @@ namespace Sheenam.Api.Services.Foundations.Homes
         public ValueTask<Home> ModifyHomeAsync(Home home) =>
         TryCatch(async () =>
         {
-            ValidateHomeOnAdd(home);
-
             Home maybeHome =
                 await this.storageBroker.SelectHomeByIdAsync(home.HomeId);
 
