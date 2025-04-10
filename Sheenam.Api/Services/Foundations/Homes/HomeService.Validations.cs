@@ -98,6 +98,22 @@ namespace Sheenam.Api.Services.Foundations.Homes
                 (Rule: IsInvalid(home.HostId), Parameter: nameof(Home.HostId)));
         }
 
+        private static void ValidateAgainstStorageHomeOnModify(Home home, Home storageHome)
+        {
+            ValidateStorageHome(storageHome, home.HomeId);
+
+            Validate(
+                (Rule: IsInvalid(home.HomeId), Parameter: nameof(Home.HomeId)),
+                (Rule: IsInvalid(home.Address), Parameter: nameof(Home.Address)),
+                (Rule: IsInvalid(home.AdditionalInfo), Parameter: nameof(Home.AdditionalInfo)),
+                (Rule: IsInvalid(home.NumberOfBedrooms), Parameter: nameof(Home.NumberOfBedrooms)),
+                (Rule: IsInvalid(home.NumberOfBathrooms), Parameter: nameof(Home.NumberOfBathrooms)),
+                (Rule: IsInvalid(home.Area), Parameter: nameof(Home.Area)),
+                (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)),
+                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)),
+                (Rule: IsInvalid(home.HostId), Parameter: nameof(Home.HostId)));
+        }
+
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidHomeException = new InvalidHomeException();
