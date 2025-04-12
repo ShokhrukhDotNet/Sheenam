@@ -12,7 +12,7 @@ using Sheenam.Api.Brokers.Storages;
 namespace Sheenam.Api.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20250406103317_InitialCreateAllTables")]
+    [Migration("20250412185542_InitialCreateAllTables")]
     partial class InitialCreateAllTables
     {
         /// <inheritdoc />
@@ -60,6 +60,43 @@ namespace Sheenam.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.HomeRequests.HomeRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("GuestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("HomeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuestId");
+
+                    b.HasIndex("HomeId");
+
+                    b.ToTable("HomeRequests");
                 });
 
             modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
@@ -147,6 +184,25 @@ namespace Sheenam.Api.Migrations
                     b.ToTable("Hosts");
                 });
 
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.HomeRequests.HomeRequest", b =>
+                {
+                    b.HasOne("Sheenam.Api.Models.Foundations.Guests.Guest", "Guest")
+                        .WithMany("HomeRequests")
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sheenam.Api.Models.Foundations.Homes.Home", "Home")
+                        .WithMany("HomeRequests")
+                        .HasForeignKey("HomeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Home");
+                });
+
             modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
                 {
                     b.HasOne("Sheenam.Api.Models.Foundations.Hosts.Host", "Host")
@@ -156,6 +212,16 @@ namespace Sheenam.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Guests.Guest", b =>
+                {
+                    b.Navigation("HomeRequests");
+                });
+
+            modelBuilder.Entity("Sheenam.Api.Models.Foundations.Homes.Home", b =>
+                {
+                    b.Navigation("HomeRequests");
                 });
 
             modelBuilder.Entity("Sheenam.Api.Models.Foundations.Hosts.Host", b =>
