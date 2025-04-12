@@ -4,7 +4,9 @@
 //==================================================
 
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Sheenam.Api.Models.Foundations.HomeRequests;
 using Sheenam.Api.Models.Foundations.Hosts;
 
 namespace Sheenam.Api.Models.Foundations.Homes
@@ -25,5 +27,7 @@ namespace Sheenam.Api.Models.Foundations.Homes
         [JsonIgnore]
         public Guid HostId { get; set; }
         public Host Host { get; set; }
+        [JsonIgnore]
+        public List<HomeRequest> HomeRequests { get; set; }
     }
 }
