@@ -135,5 +135,42 @@ namespace Sheenam.Api.Controllers
                 return InternalServerError(homeServiceException.InnerException);
             }
         }
+
+        [HttpDelete]
+        public async ValueTask<ActionResult<Home>> DeleteHomeAsync(Guid homeId)
+        {
+            try
+            {
+                Home deleteHome = await this.homeService.RemoveHomeByIdAsync(homeId);
+
+                return Ok(deleteHome);
+            }
+            catch (HomeValidationException homeValidationException)
+                when (homeValidationException.InnerException is NotFoundHomeException)
+            {
+                return NotFound(homeValidationException.InnerException);
+            }
+            catch (HomeValidationException homeValidationException)
+            {
+                return BadRequest(homeValidationException.InnerException);
+            }
+            catch (HomeDependencyValidationException homeDependencyValidationException)
+                when (homeDependencyValidationException.InnerException is LockedHomeException)
+            {
+                return Locked(homeDependencyValidationException.InnerException);
+            }
+            catch (HomeDependencyValidationException homeDependencyValidationException)
+            {
+                return BadRequest(homeDependencyValidationException.InnerException);
+            }
+            catch (HomeDependencyException homeDependencyException)
+            {
+                return InternalServerError(homeDependencyException.InnerException);
+            }
+            catch (HomeServiceException homeServiceException)
+            {
+                return InternalServerError(homeServiceException.InnerException);
+            }
+        }
     }
 }
