@@ -3,11 +3,11 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System.Linq;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
 using Sheenam.Api.Models.Foundations.Homes;
-using System.Linq;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
 {
