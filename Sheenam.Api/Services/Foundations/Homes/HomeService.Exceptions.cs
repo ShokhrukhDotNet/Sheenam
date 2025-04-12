@@ -44,12 +44,12 @@ namespace Sheenam.Api.Services.Foundations.Homes
             {
                 throw CreateAndLogValidationException(notFoundHomeException);
             }
-            //catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
-            //{
-            //    var lockedHomeException = new LockedHomeException(dbUpdateConcurrencyException);
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedHomeException = new LockedHomeException(dbUpdateConcurrencyException);
 
-            //    throw CreateAndLogDependencyValidationException(lockedHomeException);
-            //}
+                throw CreateAndLogDependencyValidationException(lockedHomeException);
+            }
             catch (DbUpdateException dbUpdateException)
             {
                 var failedHomeStorageException = new FailedHomeStorageException(dbUpdateException);
