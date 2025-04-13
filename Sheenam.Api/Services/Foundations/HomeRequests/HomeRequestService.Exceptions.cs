@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xeptions;
 using Microsoft.Data.SqlClient;
 using EFxceptions.Models.Exceptions;
+using System;
 
 namespace Sheenam.Api.Services.Foundations.HomeRequests
 {
@@ -43,6 +44,13 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHomeRequestException);
             }
+            catch (Exception exception)
+            {
+                var failedHomeRequestServiceException =
+                    new FailedHomeRequestServiceException(exception);
+
+                throw CreateAndLogServiceException(failedHomeRequestServiceException);
+            }
         }
 
         private HomeRequestValidationException CreateAndLogValidationException(Xeption exception)
@@ -72,6 +80,14 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
             this.loggingBroker.LogError(homeRequestDependencyValidationException);
 
             return homeRequestDependencyValidationException;
+        }
+
+        private HomeRequestServiceException CreateAndLogServiceException(Xeption exception)
+        {
+            var homeRequestServiceException = new HomeRequestServiceException(exception);
+            this.loggingBroker.LogError(homeRequestServiceException);
+
+            return homeRequestServiceException;
         }
     }
 }
