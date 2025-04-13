@@ -9,6 +9,7 @@ using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
 using Sheenam.Api.Models.Foundations.HomeRequests;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
+using System;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
 {
@@ -86,6 +87,45 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedHomeRequestDependencyValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            HomeRequest someHomeRequest = CreateRandomHomeRequest();
+            var serviceException = new Exception();
+
+            var failedHomeRequestServiceException =
+                new FailedHomeRequestServiceException(serviceException);
+
+            var expectedHomeRequestServiceException =
+                new HomeRequestServiceException(failedHomeRequestServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertHomeRequestAsync(someHomeRequest))
+                    .ThrowsAsync(serviceException);
+
+            // when
+            ValueTask<HomeRequest> addHomeRequestTask =
+                this.homeRequestService.AddHomeRequestAsync(someHomeRequest);
+
+            // then
+            await Assert.ThrowsAsync<HomeRequestServiceException>(() =>
+                addHomeRequestTask.AsTask());
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertHomeRequestAsync(someHomeRequest),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeRequestServiceException))),
                         Times.Once);
 
             this.storageBrokerMock.VerifyNoOtherCalls();
