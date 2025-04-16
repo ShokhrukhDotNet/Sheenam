@@ -55,5 +55,45 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdAsyncIfServiceErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someId = Guid.NewGuid();
+            Exception serverException = new Exception();
+
+            var failedHomeRequestServiceException =
+                new FailedHomeRequestServiceException(serverException);
+
+            HomeRequestServiceException expectedHomeRequestServiceException =
+                new HomeRequestServiceException(failedHomeRequestServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectHomeRequestByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(serverException);
+
+            // when
+            ValueTask<HomeRequest> retrieveHomeRequestById =
+                this.homeRequestService.RetrieveHomeRequestByIdAsync(someId);
+
+            HomeRequestServiceException actualHomeRequestServiceException =
+                await Assert.ThrowsAsync<HomeRequestServiceException>(
+                    retrieveHomeRequestById.AsTask);
+
+            // then
+            actualHomeRequestServiceException.Should().BeEquivalentTo(expectedHomeRequestServiceException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectHomeRequestByIdAsync(someId), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeRequestServiceException))), Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
