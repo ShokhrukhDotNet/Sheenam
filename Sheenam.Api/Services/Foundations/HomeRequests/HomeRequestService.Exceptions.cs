@@ -10,12 +10,14 @@ using Xeptions;
 using Microsoft.Data.SqlClient;
 using EFxceptions.Models.Exceptions;
 using System;
+using System.Linq;
 
 namespace Sheenam.Api.Services.Foundations.HomeRequests
 {
     public partial class HomeRequestService
     {
         private delegate ValueTask<HomeRequest> ReturningHomeRequestFunction();
+        private delegate IQueryable<HomeRequest> ReturningHomeRequestsFunction();
 
         private async ValueTask<HomeRequest> TryCatch(ReturningHomeRequestFunction returningHomeRequestFunction)
         {
@@ -37,12 +39,38 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
                 throw CreateAndLogCriticalDependencyException(failedHomeRequestStorageException);
             }
+            catch (NotFoundHomeRequestException notFoundHomeRequestException)
+            {
+                throw CreateAndLogValidationException(notFoundHomeRequestException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistHomeRequestException =
                     new AlreadyExistHomeRequestException(duplicateKeyException);
 
                 throw CreateAndLogDependencyValidationException(alreadyExistHomeRequestException);
+            }
+            catch (Exception exception)
+            {
+                var failedHomeRequestServiceException =
+                    new FailedHomeRequestServiceException(exception);
+
+                throw CreateAndLogServiceException(failedHomeRequestServiceException);
+            }
+        }
+
+        private IQueryable<HomeRequest> TryCatch(ReturningHomeRequestsFunction returningHomeRequestsFunction)
+        {
+            try
+            {
+                return returningHomeRequestsFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                var failedHomeRequestStorageException =
+                    new FailedHomeRequestStorageException(sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedHomeRequestStorageException);
             }
             catch (Exception exception)
             {

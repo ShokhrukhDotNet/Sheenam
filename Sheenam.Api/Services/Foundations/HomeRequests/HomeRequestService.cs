@@ -4,6 +4,7 @@
 //==================================================
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
@@ -35,5 +36,20 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
             return await this.storageBroker.InsertHomeRequestAsync(homeRequest);
         });
+
+        public ValueTask<HomeRequest> RetrieveHomeRequestByIdAsync(Guid homeRequestId) =>
+        TryCatch(async () =>
+        {
+            ValidateHomeRequestId(homeRequestId);
+
+            HomeRequest maybeHomeRequest = await this.storageBroker.SelectHomeRequestByIdAsync(homeRequestId);
+
+            ValidateStorageHomeRequest(maybeHomeRequest, homeRequestId);
+
+            return maybeHomeRequest;
+        });
+
+        public IQueryable<HomeRequest> RetrieveAllHomeRequests() =>
+            TryCatch(() => this.storageBroker.SelectAllHomeRequests());
     }
 }
