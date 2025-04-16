@@ -9,6 +9,8 @@ using RESTFulSense.Controllers;
 using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
 using Sheenam.Api.Models.Foundations.HomeRequests;
 using Sheenam.Api.Services.Foundations.HomeRequests;
+using System.Linq;
+using System;
 
 namespace Sheenam.Api.Controllers
 {
@@ -44,6 +46,52 @@ namespace Sheenam.Api.Controllers
             catch (HomeRequestDependencyValidationException homeRequestDependencyValidationException)
             {
                 return BadRequest(homeRequestDependencyValidationException.InnerException);
+            }
+            catch (HomeRequestDependencyException homeRequestDependencyException)
+            {
+                return InternalServerError(homeRequestDependencyException.InnerException);
+            }
+            catch (HomeRequestServiceException homeRequestServiceException)
+            {
+                return InternalServerError(homeRequestServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("ById")]
+        public async ValueTask<ActionResult<HomeRequest>> GetHomeRequestByIdAsync(Guid homeRequestId)
+        {
+            try
+            {
+                return await this.homeRequestService.RetrieveHomeRequestByIdAsync(homeRequestId);
+            }
+            catch (HomeRequestDependencyException homeRequestDependencyException)
+            {
+                return InternalServerError(homeRequestDependencyException.InnerException);
+            }
+            catch (HomeRequestValidationException homeRequestValidationException)
+                when (homeRequestValidationException.InnerException is InvalidHomeRequestException)
+            {
+                return BadRequest(homeRequestValidationException.InnerException);
+            }
+            catch (HomeRequestValidationException homeRequestValidationException)
+                when (homeRequestValidationException.InnerException is NotFoundHomeRequestException)
+            {
+                return NotFound(homeRequestValidationException.InnerException);
+            }
+            catch (HomeRequestServiceException homeRequestServiceException)
+            {
+                return InternalServerError(homeRequestServiceException.InnerException);
+            }
+        }
+
+        [HttpGet("All")]
+        public ActionResult<IQueryable<HomeRequest>> GetAllHomeRequests()
+        {
+            try
+            {
+                IQueryable<HomeRequest> allHomeRequests = this.homeRequestService.RetrieveAllHomeRequests();
+
+                return Ok(allHomeRequests);
             }
             catch (HomeRequestDependencyException homeRequestDependencyException)
             {
