@@ -3,13 +3,13 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using Microsoft.Data.SqlClient;
-using Moq;
-using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
-using Sheenam.Api.Models.Foundations.HomeRequests;
+using System;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
-using System;
+using Microsoft.Data.SqlClient;
+using Moq;
+using Sheenam.Api.Models.Foundations.HomeRequests;
+using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
 
 namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
 {
