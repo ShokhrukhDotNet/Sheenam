@@ -39,6 +39,10 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
                 throw CreateAndLogCriticalDependencyException(failedHomeRequestStorageException);
             }
+            catch (NotFoundHomeRequestException notFoundHomeRequestException)
+            {
+                throw CreateAndLogValidationException(notFoundHomeRequestException);
+            }
             catch (DuplicateKeyException duplicateKeyException)
             {
                 var alreadyExistHomeRequestException =
