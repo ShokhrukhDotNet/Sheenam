@@ -3,6 +3,8 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sheenam.Api.Models.Foundations.HomeRequests;
@@ -15,5 +17,10 @@ namespace Sheenam.Api.Brokers.Storages
 
         public async ValueTask<HomeRequest> InsertHomeRequestAsync(HomeRequest homeRequest) =>
             await InsertAsync(homeRequest);
+
+        public IQueryable<HomeRequest> SelectAllHomeRequests() => SelectAll<HomeRequest>();
+
+        public async ValueTask<HomeRequest> SelectHomeRequestByIdAsync(Guid homeRequestId) =>
+            await SelectAsync<HomeRequest>(homeRequestId);
     }
 }
