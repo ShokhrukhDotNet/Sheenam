@@ -4,6 +4,7 @@
 //==================================================
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sheenam.Api.Brokers.DateTimes;
 using Sheenam.Api.Brokers.Loggings;
@@ -35,5 +36,8 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
             return await this.storageBroker.InsertHomeRequestAsync(homeRequest);
         });
+
+        public IQueryable<HomeRequest> RetrieveAllHomeRequests() =>
+            throw new NotImplementedException();
     }
 }
