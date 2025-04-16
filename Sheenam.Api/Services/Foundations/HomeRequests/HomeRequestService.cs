@@ -51,5 +51,18 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
         public IQueryable<HomeRequest> RetrieveAllHomeRequests() =>
             TryCatch(() => this.storageBroker.SelectAllHomeRequests());
+
+        public ValueTask<HomeRequest> ModifyHomeRequestAsync(HomeRequest homeRequest) =>
+        TryCatch(async () =>
+        {
+            ValidateHomeRequestOnModify(homeRequest);
+
+            HomeRequest maybeHomeRequest =
+                await this.storageBroker.SelectHomeRequestByIdAsync(homeRequest.Id);
+
+            ValidateAgainstStorageHomeRequestOnModify(homeRequest, maybeHomeRequest);
+
+            return await this.storageBroker.UpdateHomeRequestAsync(homeRequest);
+        });
     }
 }
