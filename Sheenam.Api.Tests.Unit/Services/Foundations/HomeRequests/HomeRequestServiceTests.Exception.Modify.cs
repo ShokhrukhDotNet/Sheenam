@@ -105,5 +105,51 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyValidationExceptionOnModifyIfDatabaseUpdateConcurrencyErrorOccursAndLogItAsync()
+        {
+            // given
+            HomeRequest randomHomeRequest = CreateRandomHomeRequest();
+            HomeRequest someHomeRequest = randomHomeRequest;
+            Guid homeRequestId = someHomeRequest.Id;
+            var dbUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            var lockedHomeRequestException =
+                new LockedHomeRequestException(dbUpdateConcurrencyException);
+
+            var expectedHomeRequestDependencyValidationException =
+                new HomeRequestDependencyValidationException(lockedHomeRequestException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectHomeRequestByIdAsync(homeRequestId))
+                    .Throws(dbUpdateConcurrencyException);
+
+            // when
+            ValueTask<HomeRequest> modifyHomeRequestTask =
+                this.homeRequestService.ModifyHomeRequestAsync(someHomeRequest);
+
+            HomeRequestDependencyValidationException actualHomeRequestDependencyValidationException =
+                await Assert.ThrowsAsync<HomeRequestDependencyValidationException>(
+                    modifyHomeRequestTask.AsTask);
+
+            // then
+            actualHomeRequestDependencyValidationException.Should()
+                .BeEquivalentTo(expectedHomeRequestDependencyValidationException);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeRequestDependencyValidationException))), Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectHomeRequestByIdAsync(homeRequestId), Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateHomeRequestAsync(someHomeRequest), Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
