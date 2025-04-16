@@ -29,10 +29,10 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
             {
                 throw CreateAndLogValidationException(nullHomeRequestException);
             }
-            catch (InvalidHomeRequestException invalidHomeRequestException)
-            {
-                throw CreateAndLogValidationException(invalidHomeRequestException);
-            }
+            //catch (InvalidHomeRequestException invalidHomeRequestException)
+            //{
+            //    throw CreateAndLogValidationException(invalidHomeRequestException);
+            //}
             catch (SqlException sqlException)
             {
                 var failedHomeRequestStorageException = new FailedHomeRequestStorageException(sqlException);
