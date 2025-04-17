@@ -65,12 +65,15 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
             return await this.storageBroker.UpdateHomeRequestAsync(homeRequest);
         });
 
-        public async ValueTask<HomeRequest> RemoveHomeRequestByIdAsync(Guid homeRequestId)
+        public ValueTask<HomeRequest> RemoveHomeRequestByIdAsync(Guid homeRequestId) =>
+        TryCatch(async () =>
         {
+            ValidateHomeRequestId(homeRequestId);
+
             HomeRequest maybeHomeRequest =
                 await this.storageBroker.SelectHomeRequestByIdAsync(homeRequestId);
 
             return await this.storageBroker.DeleteHomeRequestAsync(maybeHomeRequest);
-        }
+        });
     }
 }
