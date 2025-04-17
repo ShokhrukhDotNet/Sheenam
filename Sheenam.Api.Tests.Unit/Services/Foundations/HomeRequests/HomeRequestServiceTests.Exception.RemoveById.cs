@@ -1,0 +1,62 @@
+﻿//==================================================
+// Copyright (c) Coalition of Good-Hearted Engineers
+// Free To Use To Find Comfort and Pease
+//==================================================
+
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
+using Sheenam.Api.Models.Foundations.HomeRequests;
+using System.Threading.Tasks;
+using System;
+using FluentAssertions;
+
+namespace Sheenam.Api.Tests.Unit.Services.Foundations.HomeRequests
+{
+    public partial class HomeRequestServiceTests
+    {
+        [Fact]
+        public async Task ShouldThrowDependencyValidationOnRemoveIfDatabaseUpdateConcurrencyErrorOccursAndLogItAsync()
+        {
+            // given
+            Guid someHomeRequestId = Guid.NewGuid();
+            var dbUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+            LockedHomeRequestException lockedHomeRequestException =
+                new LockedHomeRequestException(dbUpdateConcurrencyException);
+
+            var expectedHomeRequestDependencyValidationException =
+                new HomeRequestDependencyValidationException(lockedHomeRequestException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectHomeRequestByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(dbUpdateConcurrencyException);
+
+            // when
+            ValueTask<HomeRequest> removeHomeRequestById =
+                this.homeRequestService.RemoveHomeRequestByIdAsync(someHomeRequestId);
+
+            var actualHomeRequestDependencyValidationException =
+                await Assert.ThrowsAsync<HomeRequestDependencyValidationException>(
+                    removeHomeRequestById.AsTask);
+
+            // then
+            actualHomeRequestDependencyValidationException.Should()
+                .BeEquivalentTo(expectedHomeRequestDependencyValidationException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectHomeRequestByIdAsync(It.IsAny<Guid>()), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedHomeRequestDependencyValidationException))), Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteHomeRequestAsync(It.IsAny<HomeRequest>()), Times.Never);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+        }
+    }
+}
