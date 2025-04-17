@@ -15,6 +15,7 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
         ValueTask<HomeRequest> AddHomeRequestAsync(HomeRequest homeRequest);
         IQueryable<HomeRequest> RetrieveAllHomeRequests();
         ValueTask<HomeRequest> RetrieveHomeRequestByIdAsync(Guid homeRequestId);
+        ValueTask<HomeRequest> RemoveHomeRequestByIdAsync(Guid locationId);
         ValueTask<HomeRequest> ModifyHomeRequestAsync(HomeRequest homeRequest);
     }
 }
