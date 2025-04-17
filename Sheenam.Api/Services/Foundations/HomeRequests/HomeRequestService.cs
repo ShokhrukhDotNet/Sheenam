@@ -73,6 +73,8 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
             HomeRequest maybeHomeRequest =
                 await this.storageBroker.SelectHomeRequestByIdAsync(homeRequestId);
 
+            ValidateStorageHomeRequest(maybeHomeRequest, homeRequestId);
+
             return await this.storageBroker.DeleteHomeRequestAsync(maybeHomeRequest);
         });
     }
