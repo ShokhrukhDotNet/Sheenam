@@ -13,6 +13,10 @@ using Sheenam.Api.Services.Foundations.Guests;
 using Sheenam.Api.Services.Foundations.HomeRequests;
 using Sheenam.Api.Services.Foundations.Homes;
 using Sheenam.Api.Services.Foundations.Hosts;
+using Sheenam.Api.Services.Processings.Guests;
+using Sheenam.Api.Services.Processings.HomeRequests;
+using Sheenam.Api.Services.Processings.Homes;
+using Sheenam.Api.Services.Processings.Hosts;
 
 namespace Sheenam.Api
 {
@@ -29,6 +33,7 @@ namespace Sheenam.Api
             builder.Services.AddDbContext<StorageBroker>();
             AddBrokers(builder);
             AddFoundationServices(builder);
+            AddProcessingServices(builder);
 
             var app = builder.Build();
 
@@ -60,6 +65,14 @@ namespace Sheenam.Api
             builder.Services.AddTransient<IHostService, HostService>();
             builder.Services.AddTransient<IHomeService, HomeService>();
             builder.Services.AddTransient<IHomeRequestService, HomeRequestService>();
+        }
+
+        private static void AddProcessingServices(WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<IGuestProcessingService, GuestProcessingService>();
+            builder.Services.AddTransient<IHostProcessingService, HostProcessingService>();
+            builder.Services.AddTransient<IHomeProcessingService, HomeProcessingService>();
+            builder.Services.AddTransient<IHomeRequestProcessingService, HomeRequestProcessingService>();
         }
     }
 }

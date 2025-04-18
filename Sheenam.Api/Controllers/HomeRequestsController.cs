@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Sheenam.Api.Models.Foundations.HomeRequests;
 using Sheenam.Api.Models.Foundations.HomeRequests.Exceptions;
-using Sheenam.Api.Services.Foundations.HomeRequests;
+using Sheenam.Api.Services.Processings.HomeRequests;
 
 namespace Sheenam.Api.Controllers
 {
@@ -18,11 +18,11 @@ namespace Sheenam.Api.Controllers
     [Route("api/[controller]")]
     public class HomeRequestsController : RESTFulController
     {
-        private readonly IHomeRequestService homeRequestService;
+        private readonly IHomeRequestProcessingService homeRequestProcessingService;
 
-        public HomeRequestsController(IHomeRequestService homeRequestService)
+        public HomeRequestsController(IHomeRequestProcessingService homeRequestProcessingService)
         {
-            this.homeRequestService = homeRequestService;
+            this.homeRequestProcessingService = homeRequestProcessingService;
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                HomeRequest postedHomeRequest = await this.homeRequestService.AddHomeRequestAsync(homeRequest);
+                HomeRequest postedHomeRequest = await this.homeRequestProcessingService.RegisterAndSaveHomeRequestAsync(homeRequest);
 
                 return Created(postedHomeRequest);
             }
@@ -62,7 +62,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                return await this.homeRequestService.RetrieveHomeRequestByIdAsync(homeRequestId);
+                return await this.homeRequestProcessingService.RetrieveHomeRequestByIdAsync(homeRequestId);
             }
             catch (HomeRequestDependencyException homeRequestDependencyException)
             {
@@ -89,7 +89,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                IQueryable<HomeRequest> allHomeRequests = this.homeRequestService.RetrieveAllHomeRequests();
+                IQueryable<HomeRequest> allHomeRequests = this.homeRequestProcessingService.RetrieveAllHomeRequests();
 
                 return Ok(allHomeRequests);
             }
@@ -109,7 +109,7 @@ namespace Sheenam.Api.Controllers
             try
             {
                 HomeRequest modifyHomeRequest =
-                    await this.homeRequestService.ModifyHomeRequestAsync(homeRequest);
+                    await this.homeRequestProcessingService.ModifyHomeRequestAsync(homeRequest);
 
                 return Ok(modifyHomeRequest);
             }
@@ -141,7 +141,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                HomeRequest deleteHomeRequest = await this.homeRequestService.RemoveHomeRequestByIdAsync(homeRequestId);
+                HomeRequest deleteHomeRequest = await this.homeRequestProcessingService.RemoveHomeRequestByIdAsync(homeRequestId);
 
                 return Ok(deleteHomeRequest);
             }
