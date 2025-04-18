@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Sheenam.Api.Models.Foundations.Homes;
 using Sheenam.Api.Models.Foundations.Homes.Exceptions;
-using Sheenam.Api.Services.Foundations.Homes;
+using Sheenam.Api.Services.Processings.Homes;
 
 namespace Sheenam.Api.Controllers
 {
@@ -18,11 +18,11 @@ namespace Sheenam.Api.Controllers
     [Route("api/[controller]")]
     public class HomesController : RESTFulController
     {
-        private readonly IHomeService homeService;
+        private readonly IHomeProcessingService homeProcessingService;
 
-        public HomesController(IHomeService homeService)
+        public HomesController(IHomeProcessingService homeProcessingService)
         {
-            this.homeService = homeService;
+            this.homeProcessingService = homeProcessingService;
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Home postedHome = await this.homeService.AddHomeAsync(home);
+                Home postedHome = await this.homeProcessingService.RegisterAndSaveHomeAsync(home);
 
                 return Created(postedHome);
             }
@@ -62,7 +62,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                return await this.homeService.RetrieveHomeByIdAsync(homeId);
+                return await this.homeProcessingService.RetrieveHomeByIdAsync(homeId);
             }
             catch (HomeDependencyException homeDependencyException)
             {
@@ -89,7 +89,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                IQueryable<Home> allHomes = this.homeService.RetrieveAllHomes();
+                IQueryable<Home> allHomes = this.homeProcessingService.RetrieveAllHomes();
 
                 return Ok(allHomes);
             }
@@ -109,7 +109,7 @@ namespace Sheenam.Api.Controllers
             try
             {
                 Home modifyHome =
-                    await this.homeService.ModifyHomeAsync(home);
+                    await this.homeProcessingService.ModifyHomeAsync(home);
 
                 return Ok(modifyHome);
             }
@@ -141,7 +141,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Home deleteHome = await this.homeService.RemoveHomeByIdAsync(homeId);
+                Home deleteHome = await this.homeProcessingService.RemoveHomeByIdAsync(homeId);
 
                 return Ok(deleteHome);
             }

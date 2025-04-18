@@ -24,10 +24,10 @@ namespace Sheenam.Api.Models.Foundations.Homes
         public double Area { get; set; }
         public decimal Price { get; set; }
         public HouseType Type { get; set; }
-        [JsonIgnore]
         public Guid HostId { get; set; }
-        public Host Host { get; set; }
         [JsonIgnore]
-        public List<HomeRequest> HomeRequests { get; set; }
+        public Host? Host { get; set; }
+        [JsonIgnore]
+        public List<HomeRequest>? HomeRequests { get; set; }
     }
 }

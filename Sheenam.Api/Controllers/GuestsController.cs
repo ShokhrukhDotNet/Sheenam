@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Sheenam.Api.Models.Foundations.Guests;
 using Sheenam.Api.Models.Foundations.Guests.Exceptions;
-using Sheenam.Api.Services.Foundations.Guests;
+using Sheenam.Api.Services.Processings.Guests;
 
 namespace Sheenam.Api.Controllers
 {
@@ -18,11 +18,11 @@ namespace Sheenam.Api.Controllers
     [Route("api/[controller]")]
     public class GuestsController : RESTFulController
     {
-        private readonly IGuestService guestService;
+        private readonly IGuestProcessingService guestProcessingService;
 
-        public GuestsController(IGuestService guestService)
+        public GuestsController(IGuestProcessingService guestProcessingService)
         {
-            this.guestService = guestService;
+            this.guestProcessingService = guestProcessingService;
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Guest postedGuest = await this.guestService.AddGuestAsync(guest);
+                Guest postedGuest = await this.guestProcessingService.RegisterAndSaveGuestAsync(guest);
 
                 return Created(postedGuest);
             }
@@ -62,7 +62,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                return await this.guestService.RetrieveGuestByIdAsync(guestId);
+                return await this.guestProcessingService.RetrieveGuestByIdAsync(guestId);
             }
             catch (GuestDependencyException guestDependencyException)
             {
@@ -89,7 +89,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                IQueryable<Guest> allGuests = this.guestService.RetrieveAllGuests();
+                IQueryable<Guest> allGuests = this.guestProcessingService.RetrieveAllGuests();
 
                 return Ok(allGuests);
             }
@@ -109,7 +109,7 @@ namespace Sheenam.Api.Controllers
             try
             {
                 Guest modifyGuest =
-                    await this.guestService.ModifyGuestAsync(guest);
+                    await this.guestProcessingService.ModifyGuestAsync(guest);
 
                 return Ok(modifyGuest);
             }
@@ -141,7 +141,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Guest deleteGuest = await this.guestService.RemoveGuestByIdAsync(guestId);
+                Guest deleteGuest = await this.guestProcessingService.RemoveGuestByIdAsync(guestId);
 
                 return Ok(deleteGuest);
             }

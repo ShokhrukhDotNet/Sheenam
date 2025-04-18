@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Sheenam.Api.Models.Foundations.Hosts;
 using Sheenam.Api.Models.Foundations.Hosts.Exceptions;
-using Sheenam.Api.Services.Foundations.Hosts;
+using Sheenam.Api.Services.Processings.Hosts;
 
 namespace Sheenam.Api.Controllers
 {
@@ -18,11 +18,11 @@ namespace Sheenam.Api.Controllers
     [Route("api/[controller]")]
     public class HostsController : RESTFulController
     {
-        private readonly IHostService hostService;
+        private readonly IHostProcessingService hostProcessingService;
 
-        public HostsController(IHostService hostService)
+        public HostsController(IHostProcessingService hostProcessingService)
         {
-            this.hostService = hostService;
+            this.hostProcessingService = hostProcessingService;
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Host postedHost = await this.hostService.AddHostAsync(host);
+                Host postedHost = await this.hostProcessingService.RegisterAndSaveHostAsync(host);
 
                 return Created(postedHost);
             }
@@ -62,7 +62,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                return await this.hostService.RetrieveHostByIdAsync(hostId);
+                return await this.hostProcessingService.RetrieveHostByIdAsync(hostId);
             }
             catch (HostDependencyException hostDependencyException)
             {
@@ -89,7 +89,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                IQueryable<Host> allHosts = this.hostService.RetrieveAllHosts();
+                IQueryable<Host> allHosts = this.hostProcessingService.RetrieveAllHosts();
 
                 return Ok(allHosts);
             }
@@ -109,7 +109,7 @@ namespace Sheenam.Api.Controllers
             try
             {
                 Host modifyHost =
-                    await this.hostService.ModifyHostAsync(host);
+                    await this.hostProcessingService.ModifyHostAsync(host);
 
                 return Ok(modifyHost);
             }
@@ -141,7 +141,7 @@ namespace Sheenam.Api.Controllers
         {
             try
             {
-                Host deleteHost = await this.hostService.RemoveHostByIdAsync(hostId);
+                Host deleteHost = await this.hostProcessingService.RemoveHostByIdAsync(hostId);
 
                 return Ok(deleteHost);
             }

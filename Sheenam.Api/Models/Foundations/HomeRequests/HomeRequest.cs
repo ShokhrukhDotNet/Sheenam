@@ -21,8 +21,8 @@ namespace Sheenam.Api.Models.Foundations.HomeRequests
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
         [JsonIgnore]
-        public Guest Guest { get; set; }
+        public Guest? Guest { get; set; }
         [JsonIgnore]
-        public Home Home { get; set; }
+        public Home? Home { get; set; }
     }
 }
