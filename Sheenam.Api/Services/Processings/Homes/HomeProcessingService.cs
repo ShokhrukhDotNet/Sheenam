@@ -3,12 +3,12 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using Sheenam.Api.Models.Foundations.Homes;
-using Sheenam.Api.Services.Foundations.Homes;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Sheenam.Api.Models.Foundations.Homes;
+using Sheenam.Api.Services.Foundations.Homes;
 
 namespace Sheenam.Api.Services.Processings.Homes
 {

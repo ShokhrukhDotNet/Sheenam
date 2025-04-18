@@ -3,13 +3,13 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
-using Sheenam.Api.Models.Foundations.Homes;
-using Sheenam.Api.Models.Foundations.Hosts;
-using Sheenam.Api.Services.Foundations.Hosts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sheenam.Api.Models.Foundations.Homes;
+using Sheenam.Api.Models.Foundations.Hosts;
+using Sheenam.Api.Services.Foundations.Hosts;
 
 namespace Sheenam.Api.Services.Processings.Hosts
 {
