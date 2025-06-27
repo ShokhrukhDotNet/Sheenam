@@ -17,8 +17,6 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
             Validate(
                 (Rule: IsInvalid(homeRequest.Id), Parameter: nameof(HomeRequest.Id)),
-                (Rule: IsInvalid(homeRequest.GuestId), Parameter: nameof(HomeRequest.GuestId)),
-                (Rule: IsInvalid(homeRequest.HomeId), Parameter: nameof(HomeRequest.HomeId)),
                 (Rule: IsInvalid(homeRequest.Message), Parameter: nameof(HomeRequest.Message)),
                 (Rule: IsInvalid(homeRequest.StartDate), Parameter: nameof(HomeRequest.StartDate)),
                 (Rule: IsInvalid(homeRequest.EndDate), Parameter: nameof(HomeRequest.EndDate)),
@@ -69,8 +67,6 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
             Validate(
                 (Rule: IsInvalid(homeRequest.Id), Parameter: nameof(HomeRequest.Id)),
-                (Rule: IsInvalid(homeRequest.GuestId), Parameter: nameof(HomeRequest.GuestId)),
-                (Rule: IsInvalid(homeRequest.HomeId), Parameter: nameof(HomeRequest.HomeId)),
                 (Rule: IsInvalid(homeRequest.Message), Parameter: nameof(HomeRequest.Message)),
                 (Rule: IsInvalid(homeRequest.StartDate), Parameter: nameof(HomeRequest.StartDate)),
                 (Rule: IsInvalid(homeRequest.EndDate), Parameter: nameof(HomeRequest.EndDate)),
@@ -84,8 +80,6 @@ namespace Sheenam.Api.Services.Foundations.HomeRequests
 
             Validate(
                 (Rule: IsInvalid(homeRequest.Id), Parameter: nameof(HomeRequest.Id)),
-                (Rule: IsInvalid(homeRequest.GuestId), Parameter: nameof(HomeRequest.GuestId)),
-                (Rule: IsInvalid(homeRequest.HomeId), Parameter: nameof(HomeRequest.HomeId)),
                 (Rule: IsInvalid(homeRequest.Message), Parameter: nameof(HomeRequest.Message)),
                 (Rule: IsInvalid(homeRequest.StartDate), Parameter: nameof(HomeRequest.StartDate)),
                 (Rule: IsInvalid(homeRequest.EndDate), Parameter: nameof(HomeRequest.EndDate)),
