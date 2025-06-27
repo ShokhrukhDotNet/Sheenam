@@ -3,6 +3,7 @@
 // Free To Use To Find Comfort and Pease
 //==================================================
 
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,10 @@ namespace Sheenam.Api
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             builder.Services.AddDbContext<StorageBroker>();
             AddBrokers(builder);
             AddFoundationServices(builder);

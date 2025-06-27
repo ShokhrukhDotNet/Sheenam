@@ -23,8 +23,7 @@ namespace Sheenam.Api.Services.Foundations.Homes
                 (Rule: IsInvalid(home.NumberOfBathrooms), Parameter: nameof(Home.NumberOfBathrooms)),
                 (Rule: IsInvalid(home.Area), Parameter: nameof(Home.Area)),
                 (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)),
-                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)),
-                (Rule: IsInvalid(home.HostId), Parameter: nameof(Home.HostId)));
+                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)));
         }
 
         private static void ValidateHomeNotNull(Home home)
@@ -94,8 +93,7 @@ namespace Sheenam.Api.Services.Foundations.Homes
                 (Rule: IsInvalid(home.NumberOfBathrooms), Parameter: nameof(Home.NumberOfBathrooms)),
                 (Rule: IsInvalid(home.Area), Parameter: nameof(Home.Area)),
                 (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)),
-                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)),
-                (Rule: IsInvalid(home.HostId), Parameter: nameof(Home.HostId)));
+                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)));
         }
 
         private static void ValidateAgainstStorageHomeOnModify(Home home, Home storageHome)
@@ -110,8 +108,7 @@ namespace Sheenam.Api.Services.Foundations.Homes
                 (Rule: IsInvalid(home.NumberOfBathrooms), Parameter: nameof(Home.NumberOfBathrooms)),
                 (Rule: IsInvalid(home.Area), Parameter: nameof(Home.Area)),
                 (Rule: IsInvalid(home.Price), Parameter: nameof(Home.Price)),
-                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)),
-                (Rule: IsInvalid(home.HostId), Parameter: nameof(Home.HostId)));
+                (Rule: IsInvalid(home.Type), Parameter: nameof(Home.Type)));
         }
 
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
