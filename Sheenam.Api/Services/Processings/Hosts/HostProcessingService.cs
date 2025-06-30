@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Sheenam.Api.Models.Foundations.Homes;
 using Sheenam.Api.Models.Foundations.Hosts;
+using Sheenam.Api.Services.Foundations.Homes;
 using Sheenam.Api.Services.Foundations.Hosts;
 
 namespace Sheenam.Api.Services.Processings.Hosts
@@ -16,6 +17,7 @@ namespace Sheenam.Api.Services.Processings.Hosts
     public class HostProcessingService : IHostProcessingService
     {
         private readonly IHostService hostService;
+        private readonly IHomeService homeService;
 
         public HostProcessingService(IHostService hostService) =>
             this.hostService = hostService;
@@ -23,9 +25,23 @@ namespace Sheenam.Api.Services.Processings.Hosts
         public async ValueTask<Host> RegisterAndSaveHostAsync(Host host)
         {
             host.Id = Guid.NewGuid();
-            host.Homes = new List<Home>();
+            host.Homes ??= new List<Home>();
 
-            return await this.hostService.AddHostAsync(host);
+            foreach (Home home in host.Homes)
+            {
+                home.HomeId = Guid.NewGuid();
+                home.HostId = host.Id;
+                home.Host = null;
+            }
+
+            await this.hostService.AddHostAsync(host);
+
+            foreach (Home home in host.Homes)
+            {
+                await this.homeService.AddHomeAsync(home);
+            }
+
+            return host;
         }
 
         public IQueryable<Host> RetrieveAllHosts() =>

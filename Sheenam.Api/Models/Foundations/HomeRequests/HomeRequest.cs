@@ -14,9 +14,9 @@ namespace Sheenam.Api.Models.Foundations.HomeRequests
     {
         public Guid Id { get; set; }
         [JsonIgnore]
-        public Guid? GuestId { get; set; }
+        public Guid GuestId { get; set; }
         [JsonIgnore]
-        public Guid? HomeId { get; set; }
+        public Guid HomeId { get; set; }
         public string Message { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }

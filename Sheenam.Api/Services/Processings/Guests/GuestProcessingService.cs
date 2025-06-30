@@ -4,16 +4,20 @@
 //==================================================
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sheenam.Api.Models.Foundations.Guests;
+using Sheenam.Api.Models.Foundations.HomeRequests;
 using Sheenam.Api.Services.Foundations.Guests;
+using Sheenam.Api.Services.Foundations.HomeRequests;
 
 namespace Sheenam.Api.Services.Processings.Guests
 {
     public class GuestProcessingService : IGuestProcessingService
     {
         private readonly IGuestService guestService;
+        private readonly IHomeRequestService homeRequestService;
 
         public GuestProcessingService(IGuestService guestService) =>
             this.guestService = guestService;
@@ -21,9 +25,24 @@ namespace Sheenam.Api.Services.Processings.Guests
         public async ValueTask<Guest> RegisterAndSaveGuestAsync(Guest guest)
         {
             guest.Id = Guid.NewGuid();
-            guest.HomeRequests = new();
 
-            return await this.guestService.AddGuestAsync(guest);
+            guest.HomeRequests ??= new List<HomeRequest>();
+
+            foreach (HomeRequest homeRequest in guest.HomeRequests)
+            {
+                homeRequest.Id = Guid.NewGuid();
+                homeRequest.GuestId = guest.Id;
+                homeRequest.Guest = null;
+            }
+
+            await this.guestService.AddGuestAsync(guest);
+
+            foreach (HomeRequest homeRequest in guest.HomeRequests)
+            {
+                await this.homeRequestService.AddHomeRequestAsync(homeRequest);
+            }
+
+            return guest;
         }
 
         public IQueryable<Guest> RetrieveAllGuests() =>
