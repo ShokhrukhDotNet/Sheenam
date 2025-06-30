@@ -5,9 +5,11 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sheenam.Api.Models.Foundations.HomeRequests;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Sheenam.Api.Brokers.Storages
 {
@@ -18,10 +20,26 @@ namespace Sheenam.Api.Brokers.Storages
         public async ValueTask<HomeRequest> InsertHomeRequestAsync(HomeRequest homeRequest) =>
             await InsertAsync(homeRequest);
 
-        public IQueryable<HomeRequest> SelectAllHomeRequests() => SelectAll<HomeRequest>();
+        public IQueryable<HomeRequest> SelectAllHomeRequests()
+        {
+            var homeRequests = SelectAll<HomeRequest>()
+                .Include(a => a.Guest)
+                .Include(a => a.Home)
+                    .ThenInclude(h => h.Host);
 
-        public async ValueTask<HomeRequest> SelectHomeRequestByIdAsync(Guid homeRequestId) =>
-            await SelectAsync<HomeRequest>(homeRequestId);
+            return homeRequests;
+        }
+
+        public async ValueTask<HomeRequest> SelectHomeRequestByIdAsync(Guid homeRequestId)
+        {
+            var homeRequestWithGuestAndHome = HomeRequests
+            .Include(a => a.Guest)
+            .Include(a => a.Home)
+                .ThenInclude(h => h.Host)
+                    .FirstOrDefault(a => a.Id == homeRequestId);
+
+            return await ValueTask.FromResult(homeRequestWithGuestAndHome);
+        }
 
         public async ValueTask<HomeRequest> UpdateHomeRequestAsync(HomeRequest homeRequest) =>
             await UpdateAsync(homeRequest);

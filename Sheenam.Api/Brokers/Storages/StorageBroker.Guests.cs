@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Sheenam.Api.Models.Foundations.Guests;
@@ -18,10 +19,21 @@ namespace Sheenam.Api.Brokers.Storages
         public async ValueTask<Guest> InsertGuestAsync(Guest guest) =>
             await InsertAsync(guest);
 
-        public IQueryable<Guest> SelectAllGuests() => SelectAll<Guest>();
+        public IQueryable<Guest> SelectAllGuests()
+        {
+            var guests = SelectAll<Guest>().Include(a => a.HomeRequests);
 
-        public async ValueTask<Guest> SelectGuestByIdAsync(Guid guestId) =>
-            await SelectAsync<Guest>(guestId);
+            return guests;
+        }
+
+        public async ValueTask<Guest> SelectGuestByIdAsync(Guid guestId)
+        {
+            var guestWithHomeRequests = Guests
+                .Include(c => c.HomeRequests)
+                .FirstOrDefault(c => c.Id == guestId);
+
+            return await ValueTask.FromResult(guestWithHomeRequests);
+        }
 
         public async ValueTask<Guest> UpdateGuestAsync(Guest guest) =>
             await UpdateAsync(guest);

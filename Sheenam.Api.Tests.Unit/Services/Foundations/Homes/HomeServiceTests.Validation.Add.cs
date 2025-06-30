@@ -85,6 +85,10 @@ namespace Sheenam.Api.Tests.Unit.Services.Foundations.Homes
                 key: nameof(Home.Price),
                 values: "Value must be greater than 0");
 
+            invalidHomeException.AddData(
+                key: nameof(Home.HostId),
+                values: "Id is required");
+
             var expectedHomeValidationException =
                 new HomeValidationException(invalidHomeException);
 

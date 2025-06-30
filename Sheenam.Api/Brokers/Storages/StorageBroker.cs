@@ -37,13 +37,6 @@ namespace Sheenam.Api.Brokers.Storages
             return broker.Set<T>();
         }
 
-        public async ValueTask<T> SelectAsync<T>(params object[] objectsId) where T : class
-        {
-            var broker = new StorageBroker(configuration);
-
-            return await broker.FindAsync<T>(objectsId);
-        }
-
         public async ValueTask<T> UpdateAsync<T>(T @object)
         {
             var broker = new StorageBroker(configuration);

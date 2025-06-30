@@ -23,6 +23,8 @@ namespace Sheenam.Api.Services.Processings.HomeRequests
             homeRequest.Id = Guid.NewGuid();
             homeRequest.CreatedDate = DateTimeOffset.UtcNow;
             homeRequest.UpdatedDate = homeRequest.CreatedDate;
+            homeRequest.GuestId = homeRequest.Guest?.Id ?? homeRequest.GuestId;
+            homeRequest.HomeId = homeRequest.Home?.HomeId ?? homeRequest.HomeId;
 
             return await this.homeRequestService.AddHomeRequestAsync(homeRequest);
         }
@@ -37,10 +39,29 @@ namespace Sheenam.Api.Services.Processings.HomeRequests
         {
             homeRequest.UpdatedDate = DateTimeOffset.UtcNow;
 
-            return await this.homeRequestService.ModifyHomeRequestAsync(homeRequest);
+            var updatedHomeRequest = CreateHomeRequest(homeRequest);
+
+            return await this.homeRequestService.ModifyHomeRequestAsync(updatedHomeRequest);
         }
 
         public async ValueTask<HomeRequest> RemoveHomeRequestByIdAsync(Guid homeRequestId) =>
             await this.homeRequestService.RemoveHomeRequestByIdAsync(homeRequestId);
+
+        private static HomeRequest CreateHomeRequest(HomeRequest inputHomeRequest)
+        {
+            return new HomeRequest
+            {
+                Id = inputHomeRequest.Id,
+                GuestId = inputHomeRequest.Guest?.Id ?? inputHomeRequest.GuestId,
+                HomeId = inputHomeRequest.Home?.HomeId ?? inputHomeRequest.HomeId,
+                Message = inputHomeRequest.Message,
+                StartDate = inputHomeRequest.StartDate,
+                EndDate = inputHomeRequest.EndDate,
+                CreatedDate = inputHomeRequest.CreatedDate,
+                UpdatedDate = inputHomeRequest.UpdatedDate,
+                Guest = inputHomeRequest.Guest,
+                Home = inputHomeRequest.Home
+            };
+        }
     }
 }
